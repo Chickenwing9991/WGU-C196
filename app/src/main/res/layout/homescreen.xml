@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/HomeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Scheduler"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/TermButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Terms" />
+
+    <Button
+        android:id="@+id/CoursesButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Courses" />
+
+    <Button
+        android:id="@+id/AssessmentsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Assessments" />
+</LinearLayout>
