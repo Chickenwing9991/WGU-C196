@@ -6,6 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.wgumobilelegit.Adapters.TermAdapter;
+import com.example.wgumobilelegit.Objects.Term;
+import com.example.wgumobilelegit.dao.TermDAO;
+import com.example.wgumobilelegit.database.AppDatabase;
+
+import java.util.List;
+
 public class TermListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,5 +39,30 @@ public class TermListActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+
+        RecyclerView recyclerView = findViewById(R.id.TermList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
+        TermDAO termDAO = db.termDAO();
+
+        // Start a new thread for database operation
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Retrieve all the terms from the Room database
+                final List<Term> terms = termDAO.getAllTerms();
+
+                // Run the adapter setting on the UI thread since it affects the UI
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TermAdapter termAdapter = new TermAdapter(terms);
+                        recyclerView.setAdapter(termAdapter);
+                    }
+                });
+            }
+        }).start();
+
     }
 }

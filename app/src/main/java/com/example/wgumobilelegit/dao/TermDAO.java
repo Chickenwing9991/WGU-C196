@@ -28,6 +28,9 @@ public interface TermDAO {
     @Update
     void update(Term term);
 
+    @Insert
+    void insertNew(Term term);
+
     @Delete
     void delete(Term term);
 }

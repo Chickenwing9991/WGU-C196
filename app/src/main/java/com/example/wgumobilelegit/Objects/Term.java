@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -21,8 +22,15 @@ public class Term {
     @ColumnInfo (name = "end_date")
     public LocalDate endDate;
 
+    @Ignore
     public Term(Integer termID, String termName, LocalDate startDate, LocalDate endDate) {
         this.termID = termID;
+        this.termName = termName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Term(String termName, LocalDate startDate, LocalDate endDate) {
         this.termName = termName;
         this.startDate = startDate;
         this.endDate = endDate;

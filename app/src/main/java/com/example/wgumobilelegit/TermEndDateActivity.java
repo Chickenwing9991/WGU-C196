@@ -12,22 +12,23 @@ import androidx.annotation.NonNull;
 
 import java.util.Calendar;
 
-public class TermStartDateActivity extends Activity {
+public class TermEndDateActivity extends Activity {
+
     public long selectedDateMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.term_details_add_start);
+        setContentView(R.layout.term_details_add_end);
 
-        CalendarView calendarView = findViewById(R.id.term_details_startDate);
-        Button SaveButton = findViewById(R.id.term_details_StartDateOK);
+        CalendarView calendarView = findViewById(R.id.term_details_endDate);
+        Button SaveButton = findViewById(R.id.term_details_EndDateOK);
         SaveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                Intent intent = new Intent(TermStartDateActivity.this, TermAddActivity.class);
+                Intent intent = new Intent(TermEndDateActivity.this, TermAddActivity.class);
 
-                intent.putExtra("Date", "Start");
+                intent.putExtra("Date", "End");
                 intent.putExtra("selectedDateMillis", selectedDateMillis);
 
                 setResult(RESULT_OK, intent);
@@ -48,5 +49,6 @@ public class TermStartDateActivity extends Activity {
                 Log.d("Troubleshooting", String.valueOf(selectedDateMillis));
             }
         });
+
     }
 }
