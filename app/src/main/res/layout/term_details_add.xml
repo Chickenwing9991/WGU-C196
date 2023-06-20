@@ -24,8 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:text="Term Title" />
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/StartDate"
@@ -33,12 +32,11 @@
         android:layout_height="wrap_content"
         android:text="Start Date" />
 
-    <EditText
-        android:id="@+id/editStartDate"
+    <Button
+        android:id="@+id/GoTermDetailsStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date" />
+        android:text="Start Date" />
 
     <TextView
         android:id="@+id/endDate"
@@ -46,11 +44,22 @@
         android:layout_height="wrap_content"
         android:text="End Date" />
 
-    <EditText
-        android:id="@+id/editEndDate"
+    <Button
+        android:id="@+id/GoTermDetailsEnd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date" />
+        android:text="End Date" />
+
+    <Button
+        android:id="@+id/SaveTerm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Term" />
+
+    <Button
+        android:id="@+id/AddTermBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back" />
 
 </LinearLayout>

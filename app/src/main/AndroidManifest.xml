@@ -24,6 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".TermListActivity"></activity>
+        <activity android:name=".TermAddActivity"></activity>
+        <activity android:name=".TermStartDateActivity"></activity>
     </application>
 
 </manifest>
