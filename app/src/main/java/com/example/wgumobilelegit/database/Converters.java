@@ -2,11 +2,12 @@ package com.example.wgumobilelegit.database;
 
 import androidx.room.TypeConverter;
 
+import com.example.wgumobilelegit.Objects.AssessmentType;
+import com.example.wgumobilelegit.Objects.CourseStatus;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import entities.AssessmentType;
-import entities.CourseStatus;
 
 public class Converters {
 

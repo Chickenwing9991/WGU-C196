@@ -1,6 +1,7 @@
 package com.example.wgumobilelegit.Objects;
 
-import static database.Converters.fromAssessmentString;
+
+import static com.example.wgumobilelegit.database.Converters.fromAssessmentString;
 
 import android.os.Parcel;
 import android.os.Parcelable;

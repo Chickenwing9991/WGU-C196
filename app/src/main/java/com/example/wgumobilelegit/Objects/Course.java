@@ -8,10 +8,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.wgumobilelegit.database.Converters;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
-import database.Converters;
 
 @Entity (tableName = "courses")
 public class Course implements Parcelable {

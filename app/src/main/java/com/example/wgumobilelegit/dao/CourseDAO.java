@@ -6,9 +6,10 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.wgumobilelegit.Objects.Course;
+
 import java.util.List;
 
-import entities.Course;
 
 @Dao
 public interface CourseDAO {

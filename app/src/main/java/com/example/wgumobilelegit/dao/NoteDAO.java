@@ -6,9 +6,10 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.wgumobilelegit.Objects.Note;
+
 import java.util.List;
 
-import entities.Note;
 
 @Dao
 public interface NoteDAO {

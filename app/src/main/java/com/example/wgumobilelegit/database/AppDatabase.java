@@ -17,7 +17,7 @@ import com.example.wgumobilelegit.dao.CourseDAO;
 import com.example.wgumobilelegit.dao.MentorDAO;
 import com.example.wgumobilelegit.dao.NoteDAO;
 import com.example.wgumobilelegit.dao.TermDAO;
-@Database(entities = {Assessment.class, Course.class, Mentor.class, Term.class, Note.class}, version = 2)
+@Database(entities = {Assessment.class, Course.class, Mentor.class, Term.class, Note.class}, version = 2, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 

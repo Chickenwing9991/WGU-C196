@@ -6,9 +6,10 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.wgumobilelegit.Objects.Mentor;
+
 import java.util.List;
 
-import entities.Mentor;
 
 @Dao
 public interface MentorDAO {

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class TermListActivity extends Activity {
+public class TermAddActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,16 +16,7 @@ public class TermListActivity extends Activity {
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                Intent intent = new Intent(TermListActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button AddButton = findViewById(R.id.AddTerm);
-        AddButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                Intent intent = new Intent(TermListActivity.this, TermAddActivity.class);
+                Intent intent = new Intent(TermAddActivity.this, TermListActivity.class);
                 startActivity(intent);
             }
         });

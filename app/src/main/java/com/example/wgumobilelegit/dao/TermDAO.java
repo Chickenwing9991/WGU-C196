@@ -10,7 +10,6 @@ import com.example.wgumobilelegit.Objects.Term;
 
 import java.util.List;
 
-import entities.Term;
 
 @Dao
 public interface TermDAO {
