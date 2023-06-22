@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,11 +17,31 @@ import com.example.wgumobilelegit.database.AppDatabase;
 
 import java.util.List;
 
-public class TermListActivity extends Activity {
+public class TermListActivity extends Activity implements TermAdapter.OnTermSelectedListener {
+
+    private Term selectedTerm;
+
+    @Override
+    public void onTermSelected(Term selectedTerm) {
+        // This method will be called when an item is selected
+        this.selectedTerm = selectedTerm;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.term_list);
+
+        RecyclerView recyclerView = findViewById(R.id.TermList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
+        TermDAO termDAO = db.termDAO();
+
+        final List<Term> terms = termDAO.getAllTerms();
+
+        TermAdapter termAdapter = new TermAdapter(terms, this); // pass 'this' as the listener
+        recyclerView.setAdapter(termAdapter);
 
         Button backButton = findViewById(R.id.BackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -40,11 +61,55 @@ public class TermListActivity extends Activity {
             }
         });
 
+        Button ViewButton = findViewById(R.id.viewTerm);
+        ViewButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent intent = new Intent(TermListActivity.this, TermAddActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        RecyclerView recyclerView = findViewById(R.id.TermList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
-        TermDAO termDAO = db.termDAO();
+        Button EditButton = findViewById(R.id.EditTerm);
+        EditButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent intent = new Intent(TermListActivity.this, TermEditActivity.class);
+
+                if (selectedTerm != null) {
+                    Integer termID = selectedTerm.getTermID();
+                    String title = selectedTerm.getTermName() != null ? selectedTerm.getTermName().toString() : null;
+                    String startDate = selectedTerm.getStartDate() != null ? selectedTerm.getStartDate().toString() : null;
+                    String endDate = selectedTerm.getEndDate() != null ? selectedTerm.getEndDate().toString() : null;
+
+                    intent.putExtra("TermID", termID);
+                    intent.putExtra("Title", title);
+                    intent.putExtra("StartDate", startDate);
+                    intent.putExtra("EndDate", endDate);
+
+                    startActivity(intent);
+                } else {
+                    // Handle the case where no term is selected
+                    // For example, show a Toast message
+                    Toast.makeText(TermListActivity.this, "Please select a term to edit", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        Button DeleteButton = findViewById(R.id.DeleteTerm);
+        DeleteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+
+                termDAO.delete(selectedTerm);
+
+                final List<Term> terms = termDAO.getAllTerms();
+
+                TermAdapter termAdapter = new TermAdapter(terms, TermListActivity.this); // pass 'this' as the listener
+                recyclerView.setAdapter(termAdapter);
+            }
+        });
+
 
         // Start a new thread for database operation
         new Thread(new Runnable() {
@@ -57,7 +122,7 @@ public class TermListActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TermAdapter termAdapter = new TermAdapter(terms);
+                        TermAdapter termAdapter = new TermAdapter(terms, TermListActivity.this);
                         recyclerView.setAdapter(termAdapter);
                     }
                 });

@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,10 +29,20 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.ViewHolder> {
         }
     }
 
-    // Constructor
-    public TermAdapter(List<Term> termList) {
-        this.termList = termList;
+    // Callback interface
+    public interface OnTermSelectedListener {
+        void onTermSelected(Term selectedTerm);
     }
+
+    // Instance of the callback interface
+    private OnTermSelectedListener termSelectedListener;
+
+    // Constructor
+    public TermAdapter(List<Term> termList, OnTermSelectedListener termSelectedListener) {
+        this.termList = termList;
+        this.termSelectedListener = termSelectedListener;
+    }
+
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -62,6 +71,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.ViewHolder> {
                 notifyDataSetChanged();
 
                 selectedTerm = termList.get(position);
+                termSelectedListener.onTermSelected(selectedTerm);
             }
         });
 
