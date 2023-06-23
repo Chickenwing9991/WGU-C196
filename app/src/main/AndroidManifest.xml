@@ -36,6 +36,12 @@
         <activity android:name=".CourseEndDateActivity"></activity>
         <activity android:name=".CourseViewActivity"></activity>
         <activity android:name=".TermAddCourseActivity"></activity>
+        <activity android:name=".AssessmentListActivity"></activity>
+        <activity android:name=".AssessmentAddActivity"></activity>
+        <activity android:name=".AssessmentEditActivity"></activity>
+        <activity android:name=".AssessmentDueDateActivity"></activity>
+        <activity android:name=".AssessmentViewActivity"></activity>
+        <activity android:name=".CourseAddAssessmentActivity"></activity>
     </application>
 
 </manifest>

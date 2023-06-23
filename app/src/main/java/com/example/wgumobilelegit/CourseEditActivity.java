@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import com.example.wgumobilelegit.Objects.Course;
 import com.example.wgumobilelegit.Objects.CourseStatus;
 import com.example.wgumobilelegit.Objects.Note;
-import com.example.wgumobilelegit.Objects.SpinnerItem;
+import com.example.wgumobilelegit.Objects.CourseStatusSpinnerItem;
 import com.example.wgumobilelegit.dao.CourseDAO;
 import com.example.wgumobilelegit.dao.NoteDAO;
 import com.example.wgumobilelegit.database.AppDatabase;
@@ -44,13 +44,13 @@ public class CourseEditActivity extends Activity {
         Spinner spinner = findViewById(R.id.courseAddStatus);
         EditText Notes = findViewById(R.id.editNoteMultiLine);
 
-        List<SpinnerItem> items = new ArrayList<>();
-        items.add(new SpinnerItem("In Progress", CourseStatus.InProgress));
-        items.add(new SpinnerItem("Completed", CourseStatus.Completed));
-        items.add(new SpinnerItem("Dropped", CourseStatus.Dropped));
-        items.add(new SpinnerItem("Plan to Take", CourseStatus.PlanToTake));
+        List<CourseStatusSpinnerItem> items = new ArrayList<>();
+        items.add(new CourseStatusSpinnerItem("In Progress", CourseStatus.InProgress));
+        items.add(new CourseStatusSpinnerItem("Completed", CourseStatus.Completed));
+        items.add(new CourseStatusSpinnerItem("Dropped", CourseStatus.Dropped));
+        items.add(new CourseStatusSpinnerItem("Plan to Take", CourseStatus.PlanToTake));
 
-        ArrayAdapter<SpinnerItem> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<CourseStatusSpinnerItem> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -134,7 +134,7 @@ public class CourseEditActivity extends Activity {
 
                 CourseDAO courseDAO = db.courseDAO();
 
-                SpinnerItem Status = (SpinnerItem) spinner.getSelectedItem(); // This will get you the underlying value such as "IN_PROGRESS"
+                CourseStatusSpinnerItem Status = (CourseStatusSpinnerItem) spinner.getSelectedItem(); // This will get you the underlying value such as "IN_PROGRESS"
                 CourseStatus courseStatus = Status.getStatus();
 
                 Course course = new Course(CourseID, Title, StartDateValue, EndDateValue, courseStatus); // your course object

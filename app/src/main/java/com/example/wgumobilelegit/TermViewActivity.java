@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -103,6 +104,21 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
                 intent.putExtra("TermID", TermID);
 
                 startActivity(intent);
+            }
+        });
+
+        Button DeleteCourse = findViewById(R.id.termDetailsDeleteCourse);
+        DeleteCourse.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                selectedCourse.setTermID(null);
+
+                courseDAO.update(selectedCourse);
+
+                final List<Course> courses = courseDAO.getAssociatedCourses(TermID);
+
+                CourseAdapter courseAdapter = new CourseAdapter(courses, TermViewActivity.this); // pass 'this' as the listener
+                recyclerView.setAdapter(courseAdapter);
             }
         });
 

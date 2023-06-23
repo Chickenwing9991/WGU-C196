@@ -1,0 +1,82 @@
+package com.example.wgumobilelegit;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.wgumobilelegit.Adapters.AssessmentAdapter;
+import com.example.wgumobilelegit.Objects.Assessment;
+import com.example.wgumobilelegit.Objects.AssessmentType;
+import com.example.wgumobilelegit.dao.AssessmentDAO;
+import com.example.wgumobilelegit.database.AppDatabase;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Objects;
+
+
+public class AssessmentViewActivity extends Activity implements AssessmentAdapter.OnAssessmentSelectedListener {
+
+    public LocalDate StartDateValue;
+    public LocalDate DueDateValue;
+    public String AssessmentTitle;
+    public Assessment selectedAssessment;
+
+    @Override
+    public void onAssessmentSelected(Assessment selectedAssessment) {
+        // This method will be called when an item is selected
+        this.selectedAssessment = selectedAssessment;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.assessment_details);
+
+        //Get DB Access
+        Context context = getApplicationContext();
+        AppDatabase db = AppDatabase.getDbInstance(context);
+
+        AssessmentDAO assessmentDAO = db.AssessmentDAO();
+        /////
+
+        // Get the Intent that started this activity and extract the strings
+        Intent intent = getIntent();
+        int AssessmentID = intent.getIntExtra("AssessmentID", 1);
+        String Title = intent.getStringExtra("Title");
+        LocalDate DueDateParam = LocalDate.parse(intent.getStringExtra("DueDate"));
+        AssessmentType Type = AssessmentType.fromString(intent.getStringExtra("Type"));
+
+        DueDateValue = DueDateParam;
+
+        // Capture the layout's TextViews and set the strings as their texts
+        TextView title = findViewById(R.id.detailAssessmentName);
+        title.setText(Title);
+
+        TextView endDate = findViewById(R.id.assessmentDetailsDueValue);
+        endDate.setText(String.valueOf(DueDateParam));
+
+        TextView TypeVal = findViewById(R.id.assessmentDetailsTypeValue);
+        TypeVal.setText(Type.toString());
+
+        Button backButton = findViewById(R.id.detailBackButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent intent = new Intent(AssessmentViewActivity.this, AssessmentListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+}

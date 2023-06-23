@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.example.wgumobilelegit.Objects.Course;
-import com.example.wgumobilelegit.Objects.CourseStatus;
+import com.example.wgumobilelegit.Objects.Assessment;
+import com.example.wgumobilelegit.Objects.AssessmentType;
 import com.example.wgumobilelegit.Objects.Note;
-import com.example.wgumobilelegit.Objects.CourseStatusSpinnerItem;
-import com.example.wgumobilelegit.dao.CourseDAO;
+import com.example.wgumobilelegit.Objects.AssessmentTypeSpinnerItem;
+import com.example.wgumobilelegit.dao.AssessmentDAO;
 import com.example.wgumobilelegit.dao.NoteDAO;
 import com.example.wgumobilelegit.database.AppDatabase;
 
@@ -31,55 +31,46 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class CourseAddActivity extends Activity {
+public class AssessmentAddActivity extends Activity {
 
     public LocalDate StartDateValue;
-    public LocalDate EndDateValue;
-    public String CourseTitle;
-    public CourseStatus SelectedStatus;
+    public LocalDate DueDateValue;
+    public String AssessmentTitle;
+    public AssessmentType SelectedType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.course_details_add);
+        setContentView(R.layout.assessment_details_add);
 
-        Spinner spinner = findViewById(R.id.courseAddStatus);
+        Spinner spinner = findViewById(R.id.assessmentAddType);
 
-        List<CourseStatusSpinnerItem> items = new ArrayList<>();
-        items.add(new CourseStatusSpinnerItem("In Progress", CourseStatus.InProgress));
-        items.add(new CourseStatusSpinnerItem("Completed", CourseStatus.Completed));
-        items.add(new CourseStatusSpinnerItem("Dropped", CourseStatus.Dropped));
-        items.add(new CourseStatusSpinnerItem("Plan to Take", CourseStatus.PlanToTake));
+        List<AssessmentTypeSpinnerItem> items = new ArrayList<>();
+        items.add(new AssessmentTypeSpinnerItem("Test", AssessmentType.Test));
+        items.add(new AssessmentTypeSpinnerItem("Project", AssessmentType.Project));
+        items.add(new AssessmentTypeSpinnerItem("Paper", AssessmentType.Paper));
+        items.add(new AssessmentTypeSpinnerItem("Practical", AssessmentType.Practical));
 
-        ArrayAdapter<CourseStatusSpinnerItem> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<AssessmentTypeSpinnerItem> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
 
-        Button backButton = findViewById(R.id.AddCourseBack);
+        Button backButton = findViewById(R.id.AddAssessmentBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                Intent intent = new Intent(CourseAddActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(AssessmentAddActivity.this, AssessmentListActivity.class);
                 startActivity(intent);
             }
         });
 
-
-        Button StartDate = findViewById(R.id.GoCourseDetailsStart);
-        StartDate.setOnClickListener(new View.OnClickListener() {
+        
+        Button DueDate = findViewById(R.id.GoAssessmentDetailsEnd);
+        DueDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                Intent intent = new Intent(CourseAddActivity.this, CourseStartDateActivity.class);
-                startActivityForResult(intent, 1);
-            }
-        });
-
-        Button EndDate = findViewById(R.id.GoCourseDetailsEnd);
-        EndDate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                Intent intent = new Intent(CourseAddActivity.this, CourseEndDateActivity.class);
+                Intent intent = new Intent(AssessmentAddActivity.this, AssessmentDueDateActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
@@ -87,8 +78,8 @@ public class CourseAddActivity extends Activity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CourseStatusSpinnerItem Status = (CourseStatusSpinnerItem) parent.getItemAtPosition(position); // This will get you the underlying value such as "IN_PROGRESS"
-                SelectedStatus = Status.getStatus();
+                AssessmentTypeSpinnerItem Type = (AssessmentTypeSpinnerItem) parent.getItemAtPosition(position); // This will get you the underlying value such as "IN_PROGRESS"
+                SelectedType = Type.getType();
             }
 
             @Override
@@ -99,30 +90,24 @@ public class CourseAddActivity extends Activity {
 
 
 
-        Button SaveCourse = findViewById(R.id.SaveCourse);
-        SaveCourse.setOnClickListener(new View.OnClickListener() {
+        Button SaveAssessment = findViewById(R.id.SaveAssessment);
+        SaveAssessment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                EditText editTitle = findViewById(R.id.editCourseTitle);
+                EditText editTitle = findViewById(R.id.editAssessmentTitle);
                 String Title = editTitle.getText().toString();
-
-                EditText editNote = findViewById(R.id.editNoteMultiLine);
-                String NoteText = editNote.getText().toString();
 
                 Context context = getApplicationContext();
                 AppDatabase db = AppDatabase.getDbInstance(context);
 
-                CourseDAO courseDAO = db.courseDAO();
+                AssessmentDAO assessmentDAO = db.AssessmentDAO();
                 NoteDAO noteDAO = db.noteDAO();
 
-                Course course = new Course(Title, StartDateValue, EndDateValue, SelectedStatus); // your course object
-                Long CourseID = courseDAO.insert(course);
+                Assessment assessment = new Assessment(Title,SelectedType, DueDateValue); // your assessment object
+                assessmentDAO.insert(assessment);
 
-                Note note = new Note(Math.toIntExact(CourseID), "Course-"+CourseID, NoteText);
-                noteDAO.insert(note);
-
-                Intent intent = new Intent(CourseAddActivity.this, CourseListActivity.class);
+                Intent intent = new Intent(AssessmentAddActivity.this, AssessmentListActivity.class);
                 startActivity(intent);
             }
         });
@@ -150,11 +135,11 @@ public class CourseAddActivity extends Activity {
             long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
 
             Instant instant = Instant.ofEpochMilli(selectedDateMillis);
-            EndDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-            TextView EndText = findViewById(R.id.editEndDate);
-            EndText.setText(String.valueOf(EndDateValue));
+            DueDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+            TextView EndText = findViewById(R.id.editDueDate);
+            EndText.setText(String.valueOf(DueDateValue));
 
-            Log.d("Troubleshooting", String.valueOf(EndDateValue));
+            Log.d("Troubleshooting", String.valueOf(DueDateValue));
             Log.d("Troubleshooting", String.valueOf("End"));
         }
     }

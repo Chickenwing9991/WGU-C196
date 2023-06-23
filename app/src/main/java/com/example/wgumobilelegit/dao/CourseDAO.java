@@ -25,6 +25,9 @@ public interface CourseDAO {
     @Query("SELECT courseID FROM courses WHERE courseName IS :inputName")
     Integer getClassID(String inputName);
 
+    @Query("SELECT courseName FROM courses WHERE courseName IS :id")
+    int getCourseName(int id);
+
     @Insert
     void insertAll(Course... courses);
 

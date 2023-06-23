@@ -1,22 +1,20 @@
 package com.example.wgumobilelegit.Objects;
 
-import com.example.wgumobilelegit.Objects.CourseStatus;
-
-public class SpinnerItem {
+public class AssessmentTypeSpinnerItem {
     private String displayName;
-    private CourseStatus status;
+    private AssessmentType Type;
 
-    public SpinnerItem(String displayName, CourseStatus status) {
+    public AssessmentTypeSpinnerItem(String displayName, AssessmentType type) {
         this.displayName = displayName;
-        this.status = status;
+        this.Type = type;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    public CourseStatus getStatus() {
-        return status;
+    public AssessmentType getType() {
+        return Type;
     }
 
     @Override

@@ -30,5 +30,14 @@ public class MainActivity extends ComponentActivity {
                 startActivity(intent);
             }
         });
+
+        Button AssessmentButton = findViewById(R.id.AssessmentsButton);
+        AssessmentButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent intent = new Intent(MainActivity.this, AssessmentListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

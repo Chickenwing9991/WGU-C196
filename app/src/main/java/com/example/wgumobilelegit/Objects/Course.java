@@ -171,6 +171,10 @@ public class Course implements Parcelable {
         this.endDate = endDate;
     }
 
+    public void setTermID(Integer termID) {
+        this.termID = termID;
+    }
+
 
     @NonNull
     @Override

@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.wgumobilelegit.Objects.Assessment;
+import com.example.wgumobilelegit.Objects.Course;
 
 import java.util.List;
 
@@ -20,8 +21,14 @@ public interface AssessmentDAO {
     @Query("DELETE FROM assessments")
     void deleteAllRows();
 
+    @Query("SELECT * FROM assessments WHERE classID IS :id")
+    List<Assessment> getAssociatedAssessments(int id);
+
     @Insert
     void insertAll(Assessment... assessments);
+
+    @Insert
+    void insert(Assessment assessment);
 
     @Update
     void update(Assessment assessment);

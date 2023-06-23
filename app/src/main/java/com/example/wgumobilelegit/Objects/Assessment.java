@@ -8,6 +8,7 @@ import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -27,18 +28,32 @@ public class Assessment implements Parcelable {
     @ColumnInfo
     public AssessmentType assType;
     @ColumnInfo
-    public LocalDate startDate;
-    @ColumnInfo
-    public LocalDate endDate;
+    public LocalDate dueDate;
 
+    @Ignore
     public Assessment(Integer assID, Integer classID, String assTitle, AssessmentType assType,
-                      LocalDate startDate, LocalDate endDate) {
+                       LocalDate dueDate) {
         this.assID = assID;
         this.classID = classID;
         this.assTitle = assTitle;
         this.assType = assType;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.dueDate = dueDate;
+    }
+
+    public Assessment(Integer assID, String assTitle, AssessmentType assType,
+                      LocalDate dueDate) {
+        this.assID = assID;
+        this.assTitle = assTitle;
+        this.assType = assType;
+        this.dueDate = dueDate;
+    }
+
+    @Ignore
+    public Assessment(String assTitle, AssessmentType assType,
+                      LocalDate dueDate) {
+        this.assTitle = assTitle;
+        this.assType = assType;
+        this.dueDate = dueDate;
     }
 
     protected Assessment(Parcel in) {
@@ -54,8 +69,7 @@ public class Assessment implements Parcelable {
             classID = in.readInt();
         }
         //Convert non-parcelable parameters into the object.
-        startDate = LocalDate.parse(in.readString());
-        endDate = LocalDate.parse(in.readString());
+        dueDate = LocalDate.parse(in.readString());
         assType = fromAssessmentString(in.readString());
         assTitle = in.readString();
     }
@@ -93,10 +107,28 @@ public class Assessment implements Parcelable {
             dest.writeInt(classID);
         }
         //Convert non-parcelable parameters to strings so that they can be converted.
-        dest.writeString(startDate.format(formatter));
-        dest.writeString(endDate.format(formatter));
+        dest.writeString(dueDate.format(formatter));
         dest.writeString(assType.name());
         dest.writeString(assTitle);
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public Integer getAssessmentId() {
+        return assID;
+    }
+
+    public AssessmentType getAssessmenType() {
+        return assType;
+    }
+    public String getAssessmentName() {
+        return assTitle;
+    }
+
+    public void setClassID(Integer classID) {
+        this.classID = classID;
     }
 
 }

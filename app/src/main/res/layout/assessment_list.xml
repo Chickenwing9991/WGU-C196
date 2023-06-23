@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/TermsTop"
+        android:id="@+id/AssessmentsTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Assessments"
@@ -14,33 +14,33 @@
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/TermList"
+        android:id="@+id/AssessmentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/viewTerm"
+        android:id="@+id/viewAssessment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Term Details" />
+        android:text="View Assessment Details" />
 
     <Button
-        android:id="@+id/AddTerm"
+        android:id="@+id/AddAssessment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Term" />
+        android:text="Add Assessment" />
 
     <Button
-        android:id="@+id/EditTerm"
+        android:id="@+id/EditAssessment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit Term" />
+        android:text="Edit Assessment" />
 
     <Button
-        android:id="@+id/DeleteTerm"
+        android:id="@+id/DeleteAssessment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete Term" />
+        android:text="Delete Assessment" />
 
     <Button
         android:id="@+id/BackButton"

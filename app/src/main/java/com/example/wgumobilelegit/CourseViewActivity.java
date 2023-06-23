@@ -7,38 +7,35 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wgumobilelegit.Adapters.AssessmentAdapter;
 import com.example.wgumobilelegit.Adapters.CourseAdapter;
+import com.example.wgumobilelegit.Objects.Assessment;
 import com.example.wgumobilelegit.Objects.Course;
 import com.example.wgumobilelegit.Objects.CourseStatus;
+import com.example.wgumobilelegit.dao.AssessmentDAO;
 import com.example.wgumobilelegit.dao.CourseDAO;
 import com.example.wgumobilelegit.database.AppDatabase;
 
-import org.w3c.dom.Text;
-
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
-import java.util.Objects;
 
 
-public class CourseViewActivity extends Activity implements CourseAdapter.OnCourseSelectedListener {
+public class CourseViewActivity extends Activity implements AssessmentAdapter.OnAssessmentSelectedListener {
 
     public LocalDate StartDateValue;
     public LocalDate EndDateValue;
     public String CourseTitle;
-    public Course selectedCourse;
+    public Assessment selectedAssessment;
 
     @Override
-    public void onCourseSelected(Course selectedCourse) {
+    public void onAssessmentSelected(Assessment selectedAssessment) {
         // This method will be called when an item is selected
-        this.selectedCourse = selectedCourse;
+        this.selectedAssessment = selectedAssessment;
     }
 
     @Override
@@ -53,6 +50,7 @@ public class CourseViewActivity extends Activity implements CourseAdapter.OnCour
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         CourseDAO courseDAO = db.courseDAO();
+        AssessmentDAO assessmentDAO = db.AssessmentDAO();
         /////
 
         // Get the Intent that started this activity and extract the strings
@@ -82,12 +80,14 @@ public class CourseViewActivity extends Activity implements CourseAdapter.OnCour
         TextView StatusVal = findViewById(R.id.courseDetailsStatusValue);
         StatusVal.setText(Status.toString());
 
+        RecyclerView recyclerView = findViewById(R.id.courseDetailsAssessments);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        final List<Assessment> assessments = assessmentDAO.getAssociatedAssessments(CourseID);
+        Log.d("TroubleShoot", "Ass List"+assessments);
 
-        RecyclerView recyclerView = findViewById(R.id.courseDetailsCourses);
-        final List<Course> courses = courseDAO.getAssociatedCourses(CourseID);
+        AssessmentAdapter assessmentAdapter = new AssessmentAdapter(assessments, this); // pass 'this' as the listener
+        recyclerView.setAdapter(assessmentAdapter);
 
-        CourseAdapter courseAdapter = new CourseAdapter(courses, this); // pass 'this' as the listener
-        recyclerView.setAdapter(courseAdapter);
 
         Button backButton = findViewById(R.id.detailBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -98,8 +98,43 @@ public class CourseViewActivity extends Activity implements CourseAdapter.OnCour
             }
         });
 
+        Button AddAssessment = findViewById(R.id.courseDetailsAddAssessment);
+        AddAssessment.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent intent = new Intent(CourseViewActivity.this, CourseAddAssessmentActivity.class);
+
+                Log.d("Troubleshoot", "Start Date"+StartDateValue);
+
+
+                intent.putExtra("CourseID", CourseID);
+                intent.putExtra("Title", Title);
+                intent.putExtra("StartDate", StartDateValue.toString());
+                intent.putExtra("EndDate", EndDateValue.toString());
+                intent.putExtra("Status", Status.toString());
+                intent.putExtra("Note", Note);
+
+                startActivity(intent);
+            }
+        });
+
+        Button DeleteCourse = findViewById(R.id.courseDetailsDeleteAssessment);
+        DeleteCourse.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                selectedAssessment.setClassID(null);
+
+                assessmentDAO.update(selectedAssessment);
+
+                final List<Assessment> assessments = assessmentDAO.getAssociatedAssessments(CourseID);
+
+                AssessmentAdapter assessmentAdapter = new AssessmentAdapter(assessments, CourseViewActivity.this); // pass 'this' as the listener
+                recyclerView.setAdapter(assessmentAdapter);
+            }
+        });
     }
 
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -130,4 +165,5 @@ public class CourseViewActivity extends Activity implements CourseAdapter.OnCour
             Log.d("Troubleshooting", String.valueOf("End"));
         }
     }
+    */
 }
