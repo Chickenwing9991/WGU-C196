@@ -11,16 +11,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wgumobilelegit.Adapters.CourseAdapter;
-import com.example.wgumobilelegit.Adapters.TermAdapter;
 import com.example.wgumobilelegit.Objects.Course;
-import com.example.wgumobilelegit.Objects.Term;
+import com.example.wgumobilelegit.Objects.CourseStatus;
 import com.example.wgumobilelegit.dao.CourseDAO;
-import com.example.wgumobilelegit.dao.TermDAO;
 import com.example.wgumobilelegit.database.AppDatabase;
+
+import org.w3c.dom.Text;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -29,11 +28,11 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class TermViewActivity extends Activity implements CourseAdapter.OnCourseSelectedListener {
+public class CourseViewActivity extends Activity implements CourseAdapter.OnCourseSelectedListener {
 
     public LocalDate StartDateValue;
     public LocalDate EndDateValue;
-    public String TermTitle;
+    public String CourseTitle;
     public Course selectedCourse;
 
     @Override
@@ -45,7 +44,9 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.term_details);
+        setContentView(R.layout.course_details);
+
+        TextView Notes = findViewById(R.id.courseDetailsNotesValue);
 
         //Get DB Access
         Context context = getApplicationContext();
@@ -56,31 +57,34 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
 
         // Get the Intent that started this activity and extract the strings
         Intent intent = getIntent();
-        int TermID = intent.getIntExtra("TermID", 1);
-        Log.d("Troubleshooting", "TermID "+String.valueOf(TermID));
+        int CourseID = intent.getIntExtra("CourseID", 1);
         String Title = intent.getStringExtra("Title");
-        Log.d("Troubleshooting", "Status "+String.valueOf(intent.getStringExtra("StartDate")));
         LocalDate StartDateParam = LocalDate.parse(intent.getStringExtra("StartDate"));
         LocalDate EndDateParam = LocalDate.parse(intent.getStringExtra("EndDate"));
+        CourseStatus Status = CourseStatus.fromString(intent.getStringExtra("Status"));
+        String Note = intent.getStringExtra("Note");
+
+        Notes.setText(Note);
 
         StartDateValue = StartDateParam; // Initialize StartDateValue
         EndDateValue = EndDateParam;
 
         // Capture the layout's TextViews and set the strings as their texts
-        TextView title = findViewById(R.id.detailTermName);
+        TextView title = findViewById(R.id.detailCourseName);
         title.setText(Title);
 
-        TextView startDate = findViewById(R.id.termDetailsStartValue);
+        TextView startDate = findViewById(R.id.courseDetailsStartValue);
         startDate.setText(String.valueOf(StartDateParam));
 
-        TextView endDate = findViewById(R.id.termDetailsEndValue);
+        TextView endDate = findViewById(R.id.courseDetailsEndValue);
         endDate.setText(String.valueOf(EndDateParam));
 
-        RecyclerView recyclerView = findViewById(R.id.termDetailsCourses);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        TextView StatusVal = findViewById(R.id.courseDetailsStatusValue);
+        StatusVal.setText(Status.toString());
 
-        final List<Course> courses = courseDAO.getAssociatedCourses(TermID);
-        Log.d("Troubleshooting", "Courses "+String.valueOf(courses));
+
+        RecyclerView recyclerView = findViewById(R.id.courseDetailsCourses);
+        final List<Course> courses = courseDAO.getAssociatedCourses(CourseID);
 
         CourseAdapter courseAdapter = new CourseAdapter(courses, this); // pass 'this' as the listener
         recyclerView.setAdapter(courseAdapter);
@@ -89,19 +93,7 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                Intent intent = new Intent(TermViewActivity.this, TermListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button AddCourse = findViewById(R.id.termDetailsAddCourse);
-        AddCourse.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                Intent intent = new Intent(TermViewActivity.this, TermAddCourseActivity.class);
-
-                intent.putExtra("TermID", TermID);
-
+                Intent intent = new Intent(CourseViewActivity.this, CourseListActivity.class);
                 startActivity(intent);
             }
         });

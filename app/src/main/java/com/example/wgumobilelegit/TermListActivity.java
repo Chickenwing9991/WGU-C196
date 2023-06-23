@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wgumobilelegit.Adapters.TermAdapter;
 import com.example.wgumobilelegit.Objects.Term;
+import com.example.wgumobilelegit.dao.CourseDAO;
 import com.example.wgumobilelegit.dao.TermDAO;
 import com.example.wgumobilelegit.database.AppDatabase;
 
@@ -37,6 +38,7 @@ public class TermListActivity extends Activity implements TermAdapter.OnTermSele
 
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
         TermDAO termDAO = db.termDAO();
+        CourseDAO courseDAO = db.courseDAO();
 
         final List<Term> terms = termDAO.getAllTerms();
 
@@ -63,12 +65,29 @@ public class TermListActivity extends Activity implements TermAdapter.OnTermSele
 
         Button ViewButton = findViewById(R.id.viewTerm);
         ViewButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                Intent intent = new Intent(TermListActivity.this, TermAddActivity.class);
-                startActivity(intent);
-            }
-        });
+          public void onClick(View v) {
+              // Code here executes on main thread after user presses button
+              Intent intent = new Intent(TermListActivity.this, TermViewActivity.class);
+
+              if (selectedTerm != null) {
+                  Integer termID = selectedTerm.getTermID();
+                  String title = selectedTerm.getTermName() != null ? selectedTerm.getTermName().toString() : null;
+                  String startDate = selectedTerm.getStartDate() != null ? selectedTerm.getStartDate().toString() : null;
+                  String endDate = selectedTerm.getEndDate() != null ? selectedTerm.getEndDate().toString() : null;
+
+                  intent.putExtra("TermID", termID);
+                  intent.putExtra("Title", title);
+                  intent.putExtra("StartDate", startDate);
+                  intent.putExtra("EndDate", endDate);
+
+                  startActivity(intent);
+              } else {
+                  // Handle the case where no term is selected
+                  // For example, show a Toast message
+                  Toast.makeText(TermListActivity.this, "Please select a term to edit", Toast.LENGTH_SHORT).show();
+              }
+          }
+      });
 
         Button EditButton = findViewById(R.id.EditTerm);
         EditButton.setOnClickListener(new View.OnClickListener() {
@@ -101,12 +120,17 @@ public class TermListActivity extends Activity implements TermAdapter.OnTermSele
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
 
-                termDAO.delete(selectedTerm);
+                if(courseDAO.getAssociatedCourses(selectedTerm.getTermID()).size() > 0){
+                    Toast.makeText(TermListActivity.this, "Please Delete Associated Courses First", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    termDAO.delete(selectedTerm);
 
-                final List<Term> terms = termDAO.getAllTerms();
+                    final List<Term> terms = termDAO.getAllTerms();
 
-                TermAdapter termAdapter = new TermAdapter(terms, TermListActivity.this); // pass 'this' as the listener
-                recyclerView.setAdapter(termAdapter);
+                    TermAdapter termAdapter = new TermAdapter(terms, TermListActivity.this); // pass 'this' as the listener
+                    recyclerView.setAdapter(termAdapter);
+                }
             }
         });
 

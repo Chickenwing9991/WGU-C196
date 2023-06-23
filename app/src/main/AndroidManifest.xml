@@ -28,6 +28,14 @@
         <activity android:name=".TermEditActivity"></activity>
         <activity android:name=".TermStartDateActivity"></activity>
         <activity android:name=".TermEndDateActivity"></activity>
+        <activity android:name=".TermViewActivity"></activity>
+        <activity android:name=".CourseListActivity"></activity>
+        <activity android:name=".CourseAddActivity"></activity>
+        <activity android:name=".CourseEditActivity"></activity>
+        <activity android:name=".CourseStartDateActivity"></activity>
+        <activity android:name=".CourseEndDateActivity"></activity>
+        <activity android:name=".CourseViewActivity"></activity>
+        <activity android:name=".TermAddCourseActivity"></activity>
     </application>
 
 </manifest>

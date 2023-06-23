@@ -28,6 +28,9 @@ public interface CourseDAO {
     @Insert
     void insertAll(Course... courses);
 
+    @Insert
+    Long insert(Course course);
+
     @Update
     void update(Course course);
 

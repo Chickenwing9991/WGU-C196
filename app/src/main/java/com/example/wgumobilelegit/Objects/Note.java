@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity (tableName = "notes")
@@ -19,12 +20,20 @@ public class Note implements Parcelable {
     @ColumnInfo (name = "note")
     public String note;
 
+    @Ignore
     public Note(Integer noteID, Integer courseID, String title, String note) {
         this.noteID = noteID;
         this.courseID = courseID;
         this.title = title;
         this.note = note;
     }
+
+    public Note(Integer courseID, String title, String note) {
+        this.courseID = courseID;
+        this.title = title;
+        this.note = note;
+    }
+
 
 
     protected Note(Parcel in) {
@@ -64,6 +73,9 @@ public class Note implements Parcelable {
 
     public String getNote() {
         return note;
+    }
+    public Integer getNoteId() {
+        return noteID;
     }
 
     public void setNote(String note) {

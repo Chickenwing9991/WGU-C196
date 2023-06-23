@@ -4,4 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/courseTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Courses"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/courseList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/viewCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Course" />
+
+    <Button
+        android:id="@+id/addCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Course" />
+
+    <Button
+        android:id="@+id/editCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Course" />
+
+    <Button
+        android:id="@+id/deleteCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Course" />
+
+    <Button
+        android:id="@+id/courseBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back" />
 </LinearLayout>

@@ -13,11 +13,20 @@ public class MainActivity extends ComponentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homescreen);
 
-        Button myButton = findViewById(R.id.TermButton);
-        myButton.setOnClickListener(new View.OnClickListener() {
+        Button TermButton = findViewById(R.id.TermButton);
+        TermButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 Intent intent = new Intent(MainActivity.this, TermListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button CourseButton = findViewById(R.id.CoursesButton);
+        CourseButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent intent = new Intent(MainActivity.this, CourseListActivity.class);
                 startActivity(intent);
             }
         });

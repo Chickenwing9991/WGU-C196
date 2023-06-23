@@ -16,6 +16,9 @@ public interface TermDAO {
     @Query("SELECT * FROM terms")
     List<Term> getAllTerms();
 
+    @Query("SELECT term_name FROM terms WHERE termID = :id")
+    String getTermName(int id);
+
     @Query("SELECT term_name FROM terms")
     String[] getTermsArray();
 

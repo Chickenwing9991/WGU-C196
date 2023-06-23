@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.wgumobilelegit.database.Converters;
@@ -33,11 +34,41 @@ public class Course implements Parcelable {
     @ColumnInfo
     public CourseStatus status;
 
-    public Course(Integer courseID, int termID, int mentorID,
+    public Course(Integer courseID, Integer termID, Integer mentorID,
                   String courseName, LocalDate startDate, LocalDate endDate, CourseStatus status) {
         this.courseID = courseID;
         this.termID = termID;
         this.mentorID = mentorID;
+        this.courseName = courseName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+    }
+
+    @Ignore
+    public Course(
+                  String courseName, LocalDate startDate, LocalDate endDate, CourseStatus status) {
+        this.courseName = courseName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+    }
+
+    @Ignore
+    public Course(int courseID,
+            String courseName, LocalDate startDate, LocalDate endDate, CourseStatus status) {
+        this.courseID = courseID;
+        this.courseName = courseName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+    }
+
+    @Ignore
+    public Course(int courseID, int termID,
+                  String courseName, LocalDate startDate, LocalDate endDate, CourseStatus status) {
+        this.courseID = courseID;
+        this.termID = termID;
         this.courseName = courseName;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -116,6 +147,10 @@ public class Course implements Parcelable {
         return courseID;
     }
 
+    public String getCourseName() {
+        return courseName;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -128,9 +163,14 @@ public class Course implements Parcelable {
         return endDate;
     }
 
+    public CourseStatus getCourseStatus() {
+        return status;
+    }
+
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
 
     @NonNull
     @Override

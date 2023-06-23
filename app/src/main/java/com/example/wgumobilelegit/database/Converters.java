@@ -61,18 +61,23 @@ public class Converters {
     }
 
     @TypeConverter
-    public static CourseStatus fromStatusString(String s){
-        switch (s.toLowerCase()){
-            case "inprogress":
+    public static CourseStatus fromStatusString(String s) {
+        if (s == null) {
+            return null;
+        }
+
+        switch (s) {
+            case "InProgress":
                 return CourseStatus.InProgress;
-            case "completed":
+            case "Completed":
                 return CourseStatus.Completed;
-            case "dropped":
+            case "Dropped":
                 return CourseStatus.Dropped;
-            case "plantotake":
+            case "PlanToTake":
                 return CourseStatus.PlanToTake;
             default:
                 return null;
         }
     }
+
 }
