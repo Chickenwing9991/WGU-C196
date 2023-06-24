@@ -79,6 +79,7 @@ public class TermAddCourseActivity extends Activity implements CourseAdapter.OnC
 
                 String Title = selectedCourse.getCourseName();
                 Integer CourseID = selectedCourse.getCourseID();
+                Integer MentorID = selectedCourse.getMentorID();
                 CourseStatus Status = selectedCourse.getCourseStatus();
                 Log.d("Troubleshooting", "Status "+String.valueOf(Status));
                 StartDateValue = selectedCourse.getStartDate();
@@ -90,8 +91,8 @@ public class TermAddCourseActivity extends Activity implements CourseAdapter.OnC
                 CourseDAO courseDAO = db.courseDAO();
                 TermDAO termDAO = db.termDAO();
 
-                Course course = new Course(CourseID, TermID, Title, StartDateValue, EndDateValue, Status); // your course object
-                courseDAO.update(course);
+                Course course = new Course(TermID, MentorID, Title, StartDateValue, EndDateValue, Status); // your course object
+                courseDAO.insert(course);
 
                 Intent intent = new Intent(TermAddCourseActivity.this, TermViewActivity.class);
 

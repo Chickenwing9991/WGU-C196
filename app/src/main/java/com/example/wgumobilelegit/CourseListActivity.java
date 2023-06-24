@@ -29,6 +29,8 @@ public class CourseListActivity extends Activity implements CourseAdapter.OnCour
     public void onCourseSelected(Course selectedCourse) {
         // This method will be called when an item is selected
         this.selectedCourse = selectedCourse;
+
+        Log.d("TroubleShoot", selectedCourse.getCourseStatus().toString());
     }
 
     @Override

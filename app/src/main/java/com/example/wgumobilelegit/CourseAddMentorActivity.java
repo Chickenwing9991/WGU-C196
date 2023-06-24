@@ -11,11 +11,11 @@ import android.widget.Button;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.wgumobilelegit.Adapters.AssessmentAdapter;
-import com.example.wgumobilelegit.Objects.Assessment;
-import com.example.wgumobilelegit.Objects.AssessmentType;
+import com.example.wgumobilelegit.Adapters.MentorAdapter;
+import com.example.wgumobilelegit.Objects.Course;
+import com.example.wgumobilelegit.Objects.Mentor;
 import com.example.wgumobilelegit.Objects.CourseStatus;
-import com.example.wgumobilelegit.dao.AssessmentDAO;
+import com.example.wgumobilelegit.dao.MentorDAO;
 import com.example.wgumobilelegit.dao.CourseDAO;
 import com.example.wgumobilelegit.dao.TermDAO;
 import com.example.wgumobilelegit.database.AppDatabase;
@@ -24,24 +24,23 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-public class CourseAddAssessmentActivity extends Activity implements AssessmentAdapter.OnAssessmentSelectedListener {
+public class CourseAddMentorActivity extends Activity implements MentorAdapter.OnMentorSelectedListener {
 
     public LocalDate StartDateValue;
     public LocalDate EndDateValue;
     public String TermTitle;
-    public Assessment selectedAssessment;
+    public Mentor selectedMentor;
 
     @Override
-    public void onAssessmentSelected(Assessment selectedAssessment) {
+    public void onMentorSelected(Mentor selectedMentor) {
         // This method will be called when an item is selected
-        this.selectedAssessment = selectedAssessment;
-        Log.d("Troubleshooting", "onAssessmentSelected: " + selectedAssessment.getAssessmentName() + ", Status: " + selectedAssessment.getAssessmenType());
+        this.selectedMentor = selectedMentor;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.course_assessment_selection);
+        setContentView(R.layout.course_mentor_selection);
 
         Intent intent = getIntent();
         int CourseID = intent.getIntExtra("CourseID", 1);
@@ -54,22 +53,22 @@ public class CourseAddAssessmentActivity extends Activity implements AssessmentA
         StartDateValue = StartDateParam; // Initialize StartDateValue
         EndDateValue = EndDateParam;
 
-        RecyclerView recyclerView = findViewById(R.id.CourseAssessmentList);
+        RecyclerView recyclerView = findViewById(R.id.CourseMentorList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
-        AssessmentDAO assessmentDAO = db.AssessmentDAO();
+        MentorDAO mentorDAO = db.mentorDAO();
 
-        final List<Assessment> assessments = assessmentDAO.getAllAssessments();
+        final List<Mentor> mentors = mentorDAO.getAllMentors();
 
-        AssessmentAdapter assessmentAdapter = new AssessmentAdapter(assessments, this); // pass 'this' as the listener
-        recyclerView.setAdapter(assessmentAdapter);
+        MentorAdapter mentorAdapter = new MentorAdapter(mentors, this); // pass 'this' as the listener
+        recyclerView.setAdapter(mentorAdapter);
 
-        Button backButton = findViewById(R.id.AddCourseAssessmentBack);
+        Button backButton = findViewById(R.id.AddCourseMentorBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                Intent intent = new Intent(CourseAddAssessmentActivity.this, CourseViewActivity.class);
+                Intent intent = new Intent(CourseAddMentorActivity.this, CourseViewActivity.class);
 
                 intent.putExtra("CourseID", CourseID);
                 intent.putExtra("Title", CourseTitle);
@@ -83,27 +82,29 @@ public class CourseAddAssessmentActivity extends Activity implements AssessmentA
         });
 
 
-        Button AddAssessment = findViewById(R.id.AddAssessmentToCourse);
-        AddAssessment.setOnClickListener(new View.OnClickListener() {
+        Button AddMentor = findViewById(R.id.AddMentorToCourse);
+        AddMentor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String Title = selectedAssessment.getAssessmentName();
-                Integer AssessmentID = selectedAssessment.getAssessmentId();
-                AssessmentType Type = selectedAssessment.getAssessmenType();
-                Log.d("Troubleshooting", "Status "+String.valueOf(Type));
-                EndDateValue = selectedAssessment.getDueDate();
+                TermDAO termDAO = db.termDAO();
+
+                String Title = selectedMentor.getName();
+                Integer MentorID = selectedMentor.getId();
+                Log.d("Troubleshoot", "MentorID"+MentorID);
+                String Email = selectedMentor.getEmail();
+                String Phone = selectedMentor.getPhone();
 
                 Context context = getApplicationContext();
                 AppDatabase db = AppDatabase.getDbInstance(context);
 
-                AssessmentDAO assessmentDAO = db.AssessmentDAO();
+                MentorDAO mentorDAO = db.mentorDAO();
                 CourseDAO courseDAO = db.courseDAO();
 
-                Assessment assessment = new Assessment(CourseID, Title, Type, EndDateValue); // your assessment object
-                assessmentDAO.insert(assessment);
+                Course course = new Course(CourseID, null, MentorID, CourseTitle, StartDateValue, EndDateValue, Status); // your mentor object
+                courseDAO.update(course);
 
-                Intent intent = new Intent(CourseAddAssessmentActivity.this, CourseViewActivity.class);
+                Intent intent = new Intent(CourseAddMentorActivity.this, CourseViewActivity.class);
 
                 intent.putExtra("CourseID", CourseID);
                 intent.putExtra("Title", CourseTitle);

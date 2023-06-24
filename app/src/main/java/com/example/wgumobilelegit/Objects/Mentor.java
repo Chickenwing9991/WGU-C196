@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "mentors")
@@ -22,6 +23,13 @@ public class Mentor implements Parcelable {
 
     public Mentor(Integer id, String name, String phone, String email) {
         this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    @Ignore
+    public Mentor(String name, String phone, String email) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -64,6 +72,10 @@ public class Mentor implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getPhone() {

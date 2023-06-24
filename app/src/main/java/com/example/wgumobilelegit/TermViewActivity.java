@@ -113,7 +113,7 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
 
                 selectedCourse.setTermID(null);
 
-                courseDAO.update(selectedCourse);
+                courseDAO.delete(selectedCourse);
 
                 final List<Course> courses = courseDAO.getAssociatedCourses(TermID);
 

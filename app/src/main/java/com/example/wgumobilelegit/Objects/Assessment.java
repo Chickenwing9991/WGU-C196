@@ -40,9 +40,9 @@ public class Assessment implements Parcelable {
         this.dueDate = dueDate;
     }
 
-    public Assessment(Integer assID, String assTitle, AssessmentType assType,
+    public Assessment(Integer classID, String assTitle, AssessmentType assType,
                       LocalDate dueDate) {
-        this.assID = assID;
+        this.classID = classID;
         this.assTitle = assTitle;
         this.assType = assType;
         this.dueDate = dueDate;

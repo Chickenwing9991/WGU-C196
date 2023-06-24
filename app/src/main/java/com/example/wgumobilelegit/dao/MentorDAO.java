@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.wgumobilelegit.Objects.Course;
 import com.example.wgumobilelegit.Objects.Mentor;
 
 import java.util.List;
@@ -25,6 +26,12 @@ public interface MentorDAO {
 
     @Insert
     void insertAll(Mentor... mentors);
+
+    @Query("SELECT m.id, m.name, m.email, m.phone FROM mentors m INNER JOIN courses a ON m.id = a.mentorID WHERE courseId IS :id")
+    List<Mentor> getAssociatedMentors(int id);
+
+    @Insert
+    void insert(Mentor mentor);
 
     @Update
     void update(Mentor mentor);

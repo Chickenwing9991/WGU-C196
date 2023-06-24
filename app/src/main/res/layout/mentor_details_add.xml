@@ -5,22 +5,22 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/AssessmentAddTitle"
+        android:id="@+id/MentorAddTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Assessment"
+        android:text="Add Mentor"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/AssessmentTitle"
+        android:id="@+id/MentorTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title" />
+        android:text="Name" />
 
     <EditText
-        android:id="@+id/editAssessmentTitle"
+        android:id="@+id/editMentorName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -30,48 +30,43 @@
         android:id="@+id/mentorEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Due Date" />
+        android:text="Email" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/GoAssessmentDetailsEnd"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Due Date" />
-
         <EditText
-            android:id="@+id/editDueDate"
+            android:id="@+id/editMentorEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="date" />
+            android:inputType="text" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/mentorPhoneLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Assessment Type"
-        android:textSize="20sp" />
+        android:text="Phone Number" />
 
-    <Spinner
-        android:id="@+id/assessmentAddType"
+    <EditText
+        android:id="@+id/editMentorPhone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text" />
 
     <Button
-        android:id="@+id/SaveAssessment"
+        android:id="@+id/SaveMentor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Assessment" />
+        android:text="Save Mentor" />
 
     <Button
-        android:id="@+id/AddAssessmentBack"
+        android:id="@+id/AddMentorBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back" />

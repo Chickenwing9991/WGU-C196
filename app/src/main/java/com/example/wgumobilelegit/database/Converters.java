@@ -26,14 +26,10 @@ public class Converters {
     @TypeConverter
     public static String fromAssessmentType(AssessmentType type){
         switch (type){
-            case Project:
-                return AssessmentType.Project.name();
-            case Paper:
-                return AssessmentType.Paper.name();
-            case Practical:
-                return AssessmentType.Practical.name();
-            case Test:
-                return AssessmentType.Test.name();
+            case Performance:
+                return AssessmentType.Performance.name();
+            case Objective:
+                return AssessmentType.Objective.name();
             default:
                 return null;
         }
@@ -42,23 +38,20 @@ public class Converters {
     @TypeConverter
     public static AssessmentType fromAssessmentString(String s){
         switch (s.toLowerCase()){
-            case "test":
-                return AssessmentType.Test;
-            case "paper":
-                return AssessmentType.Paper;
-            case "project":
-                return AssessmentType.Project;
-            case "practical":
-                return AssessmentType.Practical;
+            case "performance":
+                return AssessmentType.Performance;
+            case "objective":
+                return AssessmentType.Objective;
             default:
                 return null;
         }
     }
 
     @TypeConverter
-    public static String fromCourseStatus(CourseStatus status){
-        return status.name();
+    public static String fromCourseStatus(CourseStatus status) {
+        return (status != null) ? status.name() : null;
     }
+
 
     @TypeConverter
     public static CourseStatus fromStatusString(String s) {

@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface AssessmentDAO {
 
-    @Query("SELECT * FROM assessments")
+    @Query("SELECT * FROM assessments WHERE classID is NULL")
     List<Assessment> getAllAssessments();
 
     @Query("DELETE FROM assessments")

@@ -65,9 +65,19 @@ public class Course implements Parcelable {
     }
 
     @Ignore
-    public Course(int courseID, int termID,
-                  String courseName, LocalDate startDate, LocalDate endDate, CourseStatus status) {
+    public Course(int courseID, int mentorID,
+                  String courseName, LocalDate startDate, LocalDate endDate) {
         this.courseID = courseID;
+        this.mentorID = mentorID;
+        this.courseName = courseName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    @Ignore
+    public Course(Integer termID, Integer mentorID,
+                  String courseName, LocalDate startDate, LocalDate endDate, CourseStatus status) {
+        this.mentorID = mentorID;
         this.termID = termID;
         this.courseName = courseName;
         this.startDate = startDate;
@@ -174,6 +184,14 @@ public class Course implements Parcelable {
     public void setTermID(Integer termID) {
         this.termID = termID;
     }
+
+    public Integer getMentorID() {
+        return mentorID;
+    }
+    public void setMentorID(Integer mentorID) {
+        this.mentorID = mentorID;
+    }
+
 
 
     @NonNull

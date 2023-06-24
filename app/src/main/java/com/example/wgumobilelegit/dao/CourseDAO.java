@@ -13,7 +13,7 @@ import java.util.List;
 
 @Dao
 public interface CourseDAO {
-    @Query("SELECT * FROM courses")
+    @Query("SELECT * FROM courses WHERE termID is NULL")
     List<Course> getAllCourses();
 
     @Query("DELETE FROM courses")

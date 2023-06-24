@@ -4,38 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/HomeTitle"
+    <TextView
+        android:id="@+id/MentorsTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Scheduler"
+        android:text="Mentors"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="34sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/TermButton"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/MentorList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Terms" />
+        android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/CoursesButton"
+        android:id="@+id/viewMentor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Courses" />
+        android:text="View Mentor Details" />
 
     <Button
-        android:id="@+id/AssessmentsButton"
+        android:id="@+id/AddMentor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Assessments" />
+        android:text="Add Mentor" />
 
     <Button
-        android:id="@+id/MentorButton"
+        android:id="@+id/EditMentor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mentors" />
+        android:text="Edit Mentor" />
+
+    <Button
+        android:id="@+id/DeleteMentor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Mentor" />
+
+    <Button
+        android:id="@+id/BackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back" />
 </LinearLayout>

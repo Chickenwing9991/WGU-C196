@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 
 import com.example.wgumobilelegit.Objects.Assessment;
 import com.example.wgumobilelegit.Objects.AssessmentType;
-import com.example.wgumobilelegit.Objects.Note;
 import com.example.wgumobilelegit.Objects.AssessmentTypeSpinnerItem;
 import com.example.wgumobilelegit.dao.AssessmentDAO;
 import com.example.wgumobilelegit.dao.NoteDAO;
@@ -46,10 +45,8 @@ public class AssessmentAddActivity extends Activity {
         Spinner spinner = findViewById(R.id.assessmentAddType);
 
         List<AssessmentTypeSpinnerItem> items = new ArrayList<>();
-        items.add(new AssessmentTypeSpinnerItem("Test", AssessmentType.Test));
-        items.add(new AssessmentTypeSpinnerItem("Project", AssessmentType.Project));
-        items.add(new AssessmentTypeSpinnerItem("Paper", AssessmentType.Paper));
-        items.add(new AssessmentTypeSpinnerItem("Practical", AssessmentType.Practical));
+        items.add(new AssessmentTypeSpinnerItem("Performance Assessment", AssessmentType.Performance));
+        items.add(new AssessmentTypeSpinnerItem("Objective Assessment", AssessmentType.Objective));
 
         ArrayAdapter<AssessmentTypeSpinnerItem> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -112,6 +109,7 @@ public class AssessmentAddActivity extends Activity {
             }
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
