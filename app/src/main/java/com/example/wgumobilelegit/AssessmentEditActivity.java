@@ -26,35 +26,38 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-
+// AssessmentEditActivity class
 public class AssessmentEditActivity extends Activity {
     public LocalDate DueDateValue;
     public String AssessmentTitle;
 
+    // onCreate method
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assessment_details_add);
 
+        // Initialize spinner
         Spinner spinner = findViewById(R.id.assessmentAddType);
 
+        // Create list of items for spinner
         List<AssessmentTypeSpinnerItem> items = new ArrayList<>();
         items.add(new AssessmentTypeSpinnerItem("Performance Assessment", AssessmentType.Performance));
         items.add(new AssessmentTypeSpinnerItem("Objective Assessment", AssessmentType.Objective));
 
+        // Set up adapter for spinner
         ArrayAdapter<AssessmentTypeSpinnerItem> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        // Get the Intent that started this activity and extract the strings
+        // Get intent and extract data
         Intent intent = getIntent();
         Integer AssessmentID = intent.getIntExtra("AssessmentID", 1);
         String Title = intent.getStringExtra("Title");
         LocalDate DueDateParam = LocalDate.parse(intent.getStringExtra("DueDate"));
         AssessmentType Type = AssessmentType.fromString(intent.getStringExtra("Type"));
 
-        Log.d("Troubleshooting", "EditType " +String.valueOf(intent.getStringExtra("Type")));
-        // Set the spinner's selection to the AssessmentType value saved in the database
+        // Set spinner selection based on AssessmentType
         int spinnerPosition = 0;
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getType() == Type) {
@@ -66,73 +69,77 @@ public class AssessmentEditActivity extends Activity {
 
         DueDateValue = DueDateParam;
 
-        // Capture the layout's TextViews and set the strings as their texts
+        // Set text for TextViews
         TextView title = findViewById(R.id.editAssessmentTitle);
         title.setText(Title);
 
         TextView endDate = findViewById(R.id.editDueDate);
         endDate.setText(String.valueOf(DueDateParam));
 
+        // Set onClickListener for backButton
         Button backButton = findViewById(R.id.AddAssessmentBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(AssessmentEditActivity.this, AssessmentListActivity.class);
                 startActivity(intent);
             }
         });
 
-
+        // Set onClickListener for DueDate button
         Button DueDate = findViewById(R.id.GoAssessmentDetailsEnd);
         DueDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(AssessmentEditActivity.this, AssessmentDueDateActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
 
-
+        // Set onClickListener for SaveAssessment button
         Button SaveAssessment = findViewById(R.id.SaveAssessment);
         SaveAssessment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // Get title from EditText
                 EditText editTitle = findViewById(R.id.editAssessmentTitle);
                 String Title = String.valueOf(editTitle.getText());
 
+                // Get database instance
                 Context context = getApplicationContext();
                 AppDatabase db = AppDatabase.getDbInstance(context);
 
+                // Get DAO
                 AssessmentDAO assessmentDAO = db.AssessmentDAO();
 
-                AssessmentTypeSpinnerItem Type = (AssessmentTypeSpinnerItem) spinner.getSelectedItem(); // This will get you the underlying value such as "IN_PROGRESS"
+                // Get selected AssessmentType
+                AssessmentTypeSpinnerItem Type = (AssessmentTypeSpinnerItem) spinner.getSelectedItem();
                 AssessmentType assessmentType = Type.getType();
 
-                Assessment assessment = new Assessment(AssessmentID, null, Title, assessmentType, DueDateValue); // your assessment object
+                // Create new Assessment object and update in database
+                Assessment assessment = new Assessment(AssessmentID, null, Title, assessmentType, DueDateValue);
                 assessmentDAO.update(assessment);
 
+                // Start AssessmentListActivity
                 Intent intent = new Intent(AssessmentEditActivity.this, AssessmentListActivity.class);
                 startActivity(intent);
             }
         });
     }
 
+    // onActivityResult method
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String IsDate = data.getStringExtra("Date");
-        Log.d("Troubleshooting", String.valueOf(IsDate));
-
+        // Get date from Intent
         long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
 
+        // Convert date to LocalDate
         Instant instant = Instant.ofEpochMilli(selectedDateMillis);
         DueDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // Set date in TextView
         TextView EndText = findViewById(R.id.editDueDate);
         EndText.setText(String.valueOf(DueDateValue));
-
-        Log.d("Troubleshooting", String.valueOf(DueDateValue));
-        Log.d("Troubleshooting", String.valueOf("End"));
-        }
     }
+}

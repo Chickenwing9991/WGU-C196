@@ -37,37 +37,35 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
     public String TermTitle;
     public Course selectedCourse;
 
+    // Method to handle course selection
     @Override
     public void onCourseSelected(Course selectedCourse) {
-        // This method will be called when an item is selected
         this.selectedCourse = selectedCourse;
     }
 
+    // Method to handle activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.term_details);
 
-        //Get DB Access
+        // Get database instance
         Context context = getApplicationContext();
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         CourseDAO courseDAO = db.courseDAO();
-        /////
 
-        // Get the Intent that started this activity and extract the strings
+        // Extract data from intent
         Intent intent = getIntent();
         int TermID = intent.getIntExtra("TermID", 1);
-        Log.d("Troubleshooting", "TermID "+String.valueOf(TermID));
         String Title = intent.getStringExtra("Title");
-        Log.d("Troubleshooting", "Status "+String.valueOf(intent.getStringExtra("StartDate")));
         LocalDate StartDateParam = LocalDate.parse(intent.getStringExtra("StartDate"));
         LocalDate EndDateParam = LocalDate.parse(intent.getStringExtra("EndDate"));
 
         StartDateValue = StartDateParam; // Initialize StartDateValue
         EndDateValue = EndDateParam;
 
-        // Capture the layout's TextViews and set the strings as their texts
+        // Set text views with extracted data
         TextView title = findViewById(R.id.detailTermName);
         title.setText(Title);
 
@@ -77,46 +75,41 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
         TextView endDate = findViewById(R.id.termDetailsEndValue);
         endDate.setText(String.valueOf(EndDateParam));
 
+        // Set up recycler view
         RecyclerView recyclerView = findViewById(R.id.termDetailsCourses);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         final List<Course> courses = courseDAO.getAssociatedCourses(TermID);
-        Log.d("Troubleshooting", "Courses "+String.valueOf(courses));
 
         CourseAdapter courseAdapter = new CourseAdapter(courses, this); // pass 'this' as the listener
         recyclerView.setAdapter(courseAdapter);
 
+        // Set up back button
         Button backButton = findViewById(R.id.detailBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(TermViewActivity.this, TermListActivity.class);
                 startActivity(intent);
             }
         });
 
+        // Set up add course button
         Button AddCourse = findViewById(R.id.termDetailsAddCourse);
         AddCourse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(TermViewActivity.this, TermAddCourseActivity.class);
-
                 intent.putExtra("TermID", TermID);
-
                 startActivity(intent);
             }
         });
 
+        // Set up delete course button
         Button DeleteCourse = findViewById(R.id.termDetailsDeleteCourse);
         DeleteCourse.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 selectedCourse.setTermID(null);
-
                 courseDAO.delete(selectedCourse);
-
                 final List<Course> courses = courseDAO.getAssociatedCourses(TermID);
-
                 CourseAdapter courseAdapter = new CourseAdapter(courses, TermViewActivity.this); // pass 'this' as the listener
                 recyclerView.setAdapter(courseAdapter);
             }
@@ -124,12 +117,12 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
 
     }
 
+    // Method to handle result from another activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         String IsDate = data.getStringExtra("Date");
-        Log.d("Troubleshooting", String.valueOf(IsDate));
 
         if (resultCode == RESULT_OK && Objects.equals(IsDate, "Start")) {
             long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
@@ -138,9 +131,6 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
             StartDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
             TextView StartText = findViewById(R.id.editStartDate);
             StartText.setText(String.valueOf(StartDateValue));
-
-            Log.d("Troubleshooting", String.valueOf(StartDateValue));
-            Log.d("Troubleshooting", String.valueOf("Start"));
         }
         else{
             long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
@@ -149,9 +139,6 @@ public class TermViewActivity extends Activity implements CourseAdapter.OnCourse
             EndDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
             TextView EndText = findViewById(R.id.editEndDate);
             EndText.setText(String.valueOf(EndDateValue));
-
-            Log.d("Troubleshooting", String.valueOf(EndDateValue));
-            Log.d("Troubleshooting", String.valueOf("End"));
         }
     }
 }

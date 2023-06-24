@@ -24,7 +24,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-
+// This class is used to edit the details of a mentor
 public class MentorEditActivity extends Activity {
     public String MentorEmail;
     public String MentorPhone;
@@ -35,16 +35,14 @@ public class MentorEditActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mentor_details_add);
 
-
-        // Get the Intent that started this activity and extract the strings
+        // Extracting the intent that started this activity
         Intent intent = getIntent();
         Integer MentorID = intent.getIntExtra("MentorID", 1);
         String Title = intent.getStringExtra("Title");
         String Email = intent.getStringExtra("Email");
         String Phone = intent.getStringExtra("Phone");
 
-
-        // Capture the layout's TextViews and set the strings as their texts
+        // Setting the extracted strings as texts for the layout's TextViews
         TextView title = findViewById(R.id.editMentorName);
         title.setText(Title);
 
@@ -54,16 +52,16 @@ public class MentorEditActivity extends Activity {
         TextView phone = findViewById(R.id.editMentorPhone);
         phone.setText(String.valueOf(Phone));
 
+        // Setting up the back button to return to the MentorListActivity
         Button backButton = findViewById(R.id.AddMentorBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(MentorEditActivity.this, MentorListActivity.class);
                 startActivity(intent);
             }
         });
 
-
+        // Setting up the save button to update the mentor details in the database
         Button SaveMentor = findViewById(R.id.SaveMentor);
         SaveMentor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,8 +75,8 @@ public class MentorEditActivity extends Activity {
 
                 MentorDAO mentorDAO = db.mentorDAO();
 
-                Mentor mentor = new Mentor(MentorID, Title, Email, Phone); // your mentor object
-                mentorDAO.update(mentor);
+                Mentor mentor = new Mentor(MentorID, Title, Phone, Email); // Creating a mentor object
+                mentorDAO.update(mentor); // Updating the mentor details in the database
 
                 Intent intent = new Intent(MentorEditActivity.this, MentorListActivity.class);
                 startActivity(intent);

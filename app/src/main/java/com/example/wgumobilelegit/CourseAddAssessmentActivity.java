@@ -23,7 +23,7 @@ import com.example.wgumobilelegit.database.AppDatabase;
 import java.time.LocalDate;
 import java.util.List;
 
-
+// Class for adding assessments to a course
 public class CourseAddAssessmentActivity extends Activity implements AssessmentAdapter.OnAssessmentSelectedListener {
 
     public LocalDate StartDateValue;
@@ -31,18 +31,20 @@ public class CourseAddAssessmentActivity extends Activity implements AssessmentA
     public String TermTitle;
     public Assessment selectedAssessment;
 
+    // Method to handle the selection of an assessment
     @Override
     public void onAssessmentSelected(Assessment selectedAssessment) {
-        // This method will be called when an item is selected
         this.selectedAssessment = selectedAssessment;
         Log.d("Troubleshooting", "onAssessmentSelected: " + selectedAssessment.getAssessmentName() + ", Status: " + selectedAssessment.getAssessmenType());
     }
 
+    // Method to handle the creation of the activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_assessment_selection);
 
+        // Get the intent and extract the data
         Intent intent = getIntent();
         int CourseID = intent.getIntExtra("CourseID", 1);
         String CourseTitle = intent.getStringExtra("Title");
@@ -51,24 +53,30 @@ public class CourseAddAssessmentActivity extends Activity implements AssessmentA
         CourseStatus Status = CourseStatus.fromString(intent.getStringExtra("Status"));
         String Note = intent.getStringExtra("Note");
 
-        StartDateValue = StartDateParam; // Initialize StartDateValue
+        // Initialize StartDateValue and EndDateValue
+        StartDateValue = StartDateParam;
         EndDateValue = EndDateParam;
 
+        // Set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.CourseAssessmentList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Get the database instance and the DAO
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
         AssessmentDAO assessmentDAO = db.AssessmentDAO();
 
+        // Get all assessments
         final List<Assessment> assessments = assessmentDAO.getAllAssessments();
 
-        AssessmentAdapter assessmentAdapter = new AssessmentAdapter(assessments, this); // pass 'this' as the listener
+        // Set up the adapter and set it to the RecyclerView
+        AssessmentAdapter assessmentAdapter = new AssessmentAdapter(assessments, this);
         recyclerView.setAdapter(assessmentAdapter);
 
+        // Set up the back button
         Button backButton = findViewById(R.id.AddCourseAssessmentBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+                // Create a new intent and put the data
                 Intent intent = new Intent(CourseAddAssessmentActivity.this, CourseViewActivity.class);
 
                 intent.putExtra("CourseID", CourseID);
@@ -78,31 +86,35 @@ public class CourseAddAssessmentActivity extends Activity implements AssessmentA
                 intent.putExtra("Status", Status.toString());
                 intent.putExtra("Note", Note);
 
+                // Start the new activity
                 startActivity(intent);
             }
         });
 
-
+        // Set up the AddAssessment button
         Button AddAssessment = findViewById(R.id.AddAssessmentToCourse);
         AddAssessment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // Get the data from the selected assessment
                 String Title = selectedAssessment.getAssessmentName();
                 Integer AssessmentID = selectedAssessment.getAssessmentId();
                 AssessmentType Type = selectedAssessment.getAssessmenType();
-                Log.d("Troubleshooting", "Status "+String.valueOf(Type));
                 EndDateValue = selectedAssessment.getDueDate();
 
+                // Get the database instance and the DAO
                 Context context = getApplicationContext();
                 AppDatabase db = AppDatabase.getDbInstance(context);
 
                 AssessmentDAO assessmentDAO = db.AssessmentDAO();
                 CourseDAO courseDAO = db.courseDAO();
 
-                Assessment assessment = new Assessment(CourseID, Title, Type, EndDateValue); // your assessment object
+                // Create a new assessment and insert it into the database
+                Assessment assessment = new Assessment(CourseID, Title, Type, EndDateValue);
                 assessmentDAO.insert(assessment);
 
+                // Create a new intent and put the data
                 Intent intent = new Intent(CourseAddAssessmentActivity.this, CourseViewActivity.class);
 
                 intent.putExtra("CourseID", CourseID);
@@ -112,6 +124,7 @@ public class CourseAddAssessmentActivity extends Activity implements AssessmentA
                 intent.putExtra("Status", Status.toString());
                 intent.putExtra("Note", Note);
 
+                // Start the new activity
                 startActivity(intent);
             }
         });

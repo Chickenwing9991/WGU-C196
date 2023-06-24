@@ -12,8 +12,10 @@ import androidx.annotation.NonNull;
 
 import java.util.Calendar;
 
+// This class is used to set the due date for an assessment
 public class AssessmentDueDateActivity extends Activity {
 
+    // Variable to store the selected date in milliseconds
     public long selectedDateMillis;
 
     @Override
@@ -21,32 +23,40 @@ public class AssessmentDueDateActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assessment_details_add_due);
 
+        // Initialize the CalendarView and Button
         CalendarView calendarView = findViewById(R.id.assessment_details_dueDate);
         Button SaveButton = findViewById(R.id.assessment_details_DueDateOK);
+
+        // Set an OnClickListener for the SaveButton
         SaveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+                // Create a new intent to go back to the AssessmentAddActivity
                 Intent intent = new Intent(AssessmentDueDateActivity.this, AssessmentAddActivity.class);
 
+                // Put extra data in the intent
                 intent.putExtra("Date", "End");
                 intent.putExtra("selectedDateMillis", selectedDateMillis);
 
+                // Set the result of this activity and finish it
                 setResult(RESULT_OK, intent);
                 finish();
 
-                Log.d("Troubleshooting", String.valueOf(selectedDateMillis));
+                // Log the selected date for troubleshooting
+                Log.d("Selected Date", String.valueOf(selectedDateMillis));
             }
         });
 
+        // Set an OnDateChangeListener for the calendarView
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                // Note: the month is 0-based
+                // Create a new Calendar instance and set the selected date
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth);
                 selectedDateMillis = calendar.getTimeInMillis();
 
-                Log.d("Troubleshooting", String.valueOf(selectedDateMillis));
+                // Log the selected date for troubleshooting
+                Log.d("Selected Date", String.valueOf(selectedDateMillis));
             }
         });
 

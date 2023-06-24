@@ -1,5 +1,6 @@
 package com.example.wgumobilelegit;
 
+// Import necessary libraries
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,31 +16,33 @@ import com.example.wgumobilelegit.database.AppDatabase;
 
 import java.time.LocalDate;
 
-
+// Define the MentorViewActivity class
 public class MentorViewActivity extends Activity implements MentorAdapter.OnMentorSelectedListener {
 
+    // Declare class variables
     public LocalDate StartDateValue;
     public LocalDate DueDateValue;
     public String MentorTitle;
     public Mentor selectedMentor;
 
+    // Override the onMentorSelected method from the MentorAdapter interface
     @Override
     public void onMentorSelected(Mentor selectedMentor) {
-        // This method will be called when an item is selected
         this.selectedMentor = selectedMentor;
     }
 
+    // Override the onCreate method from the Activity class
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mentor_details);
 
-        //Get DB Access
+        // Get database instance
         Context context = getApplicationContext();
         AppDatabase db = AppDatabase.getDbInstance(context);
 
+        // Create a MentorDAO object
         MentorDAO mentorDAO = db.mentorDAO();
-        /////
 
         // Get the Intent that started this activity and extract the strings
         Intent intent = getIntent();
@@ -58,10 +61,11 @@ public class MentorViewActivity extends Activity implements MentorAdapter.OnMent
         TextView phone = findViewById(R.id.mentorDetailsPhoneValue);
         phone.setText(Phone);
 
+        // Set up the back button and its click listener
         Button backButton = findViewById(R.id.detailBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+                // Start the MentorListActivity when the back button is clicked
                 Intent intent = new Intent(MentorViewActivity.this, MentorListActivity.class);
                 startActivity(intent);
             }

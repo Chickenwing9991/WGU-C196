@@ -34,17 +34,18 @@ public class TermEditActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.term_details_add);
 
-        // Get the Intent that started this activity and extract the strings
+        // Extracting the intent data
         Intent intent = getIntent();
         int TermID = intent.getIntExtra("TermID", 1);
         String Title = intent.getStringExtra("Title");
         LocalDate StartDateParam = LocalDate.parse(intent.getStringExtra("StartDate"));
         LocalDate EndDateParam = LocalDate.parse(intent.getStringExtra("EndDate"));
 
-        StartDateValue = StartDateParam; // Initialize StartDateValue
+        // Initializing Start and End Date values
+        StartDateValue = StartDateParam;
         EndDateValue = EndDateParam;
 
-        // Capture the layout's TextViews and set the strings as their texts
+        // Setting up the layout's TextViews
         TextView title = findViewById(R.id.editTermTitle);
         title.setText(Title);
 
@@ -54,35 +55,34 @@ public class TermEditActivity extends Activity {
         TextView endDate = findViewById(R.id.editEndDate);
         endDate.setText(String.valueOf(EndDateParam));
 
+        // Setting up the back button
         Button backButton = findViewById(R.id.AddTermBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(TermEditActivity.this, TermListActivity.class);
                 startActivity(intent);
             }
         });
 
-
+        // Setting up the Start Date button
         Button StartDate = findViewById(R.id.GoTermDetailsStart);
         StartDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(TermEditActivity.this, TermStartDateActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
 
+        // Setting up the End Date button
         Button EndDate = findViewById(R.id.GoTermDetailsEnd);
         EndDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(TermEditActivity.this, TermEndDateActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
 
-
+        // Setting up the Save Term button
         Button SaveTerm = findViewById(R.id.SaveTerm);
         SaveTerm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class TermEditActivity extends Activity {
 
                 TermDAO termDAO = db.termDAO();
 
-                Term term = new Term(TermID, Title, StartDateValue, EndDateValue); // your term object
+                Term term = new Term(TermID, Title, StartDateValue, EndDateValue);
                 termDAO.update(term);
 
                 Intent intent = new Intent(TermEditActivity.this, TermListActivity.class);
@@ -111,8 +111,8 @@ public class TermEditActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         String IsDate = data.getStringExtra("Date");
-        Log.d("Troubleshooting", String.valueOf(IsDate));
 
+        // Checking if the result is for Start Date
         if (resultCode == RESULT_OK && Objects.equals(IsDate, "Start")) {
             long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
 
@@ -120,10 +120,8 @@ public class TermEditActivity extends Activity {
             StartDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
             TextView StartText = findViewById(R.id.editStartDate);
             StartText.setText(String.valueOf(StartDateValue));
-
-            Log.d("Troubleshooting", String.valueOf(StartDateValue));
-            Log.d("Troubleshooting", String.valueOf("Start"));
         }
+        // If not, it's for End Date
         else{
             long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
 
@@ -131,9 +129,6 @@ public class TermEditActivity extends Activity {
             EndDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
             TextView EndText = findViewById(R.id.editEndDate);
             EndText.setText(String.valueOf(EndDateValue));
-
-            Log.d("Troubleshooting", String.valueOf(EndDateValue));
-            Log.d("Troubleshooting", String.valueOf("End"));
         }
     }
 }

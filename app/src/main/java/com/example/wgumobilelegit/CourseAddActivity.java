@@ -1,5 +1,6 @@
 package com.example.wgumobilelegit;
 
+// Importing necessary libraries and classes
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -30,9 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
+// Main class for adding a course
 public class CourseAddActivity extends Activity {
 
+    // Variables to store course details
     public LocalDate StartDateValue;
     public LocalDate EndDateValue;
     public String CourseTitle;
@@ -43,6 +45,7 @@ public class CourseAddActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_details_add);
 
+        // Setting up the spinner for course status
         Spinner spinner = findViewById(R.id.courseAddStatus);
 
         List<CourseStatusSpinnerItem> items = new ArrayList<>();
@@ -55,73 +58,75 @@ public class CourseAddActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-
+        // Setting up the back button
         Button backButton = findViewById(R.id.AddCourseBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseAddActivity.this, CourseListActivity.class);
                 startActivity(intent);
             }
         });
 
-
+        // Setting up the start date button
         Button StartDate = findViewById(R.id.GoCourseDetailsStart);
         StartDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseAddActivity.this, CourseStartDateActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
 
+        // Setting up the end date button
         Button EndDate = findViewById(R.id.GoCourseDetailsEnd);
         EndDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseAddActivity.this, CourseEndDateActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
 
+        // Setting up the spinner item selection listener
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CourseStatusSpinnerItem Status = (CourseStatusSpinnerItem) parent.getItemAtPosition(position); // This will get you the underlying value such as "IN_PROGRESS"
+                CourseStatusSpinnerItem Status = (CourseStatusSpinnerItem) parent.getItemAtPosition(position);
                 SelectedStatus = Status.getStatus();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Optional: Handle the case where nothing is selected
+                // Handle the case where nothing is selected
             }
         });
 
-
-
+        // Setting up the save course button
         Button SaveCourse = findViewById(R.id.SaveCourse);
         SaveCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // Getting the course title and note from the user
                 EditText editTitle = findViewById(R.id.editCourseTitle);
                 String Title = editTitle.getText().toString();
 
                 EditText editNote = findViewById(R.id.editNoteMultiLine);
                 String NoteText = editNote.getText().toString();
 
+                // Setting up the database
                 Context context = getApplicationContext();
                 AppDatabase db = AppDatabase.getDbInstance(context);
 
                 CourseDAO courseDAO = db.courseDAO();
                 NoteDAO noteDAO = db.noteDAO();
 
-                Course course = new Course(Title, StartDateValue, EndDateValue, SelectedStatus); // your course object
+                // Creating a new course and note
+                Course course = new Course(Title, StartDateValue, EndDateValue, SelectedStatus);
                 Long CourseID = courseDAO.insert(course);
 
                 Note note = new Note(Math.toIntExact(CourseID), "Course-"+CourseID, NoteText);
                 noteDAO.insert(note);
 
+                // Redirecting to the course list activity
                 Intent intent = new Intent(CourseAddActivity.this, CourseListActivity.class);
                 startActivity(intent);
             }
@@ -132,30 +137,26 @@ public class CourseAddActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Getting the date from the intent
         String IsDate = data.getStringExtra("Date");
-        Log.d("Troubleshooting", String.valueOf(IsDate));
 
         if (resultCode == RESULT_OK && Objects.equals(IsDate, "Start")) {
             long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
 
+            // Converting the date to LocalDate
             Instant instant = Instant.ofEpochMilli(selectedDateMillis);
             StartDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
             TextView StartText = findViewById(R.id.editStartDate);
             StartText.setText(String.valueOf(StartDateValue));
-
-            Log.d("Troubleshooting", String.valueOf(StartDateValue));
-            Log.d("Troubleshooting", String.valueOf("Start"));
         }
         else{
             long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
 
+            // Converting the date to LocalDate
             Instant instant = Instant.ofEpochMilli(selectedDateMillis);
             EndDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
             TextView EndText = findViewById(R.id.editEndDate);
             EndText.setText(String.valueOf(EndDateValue));
-
-            Log.d("Troubleshooting", String.valueOf(EndDateValue));
-            Log.d("Troubleshooting", String.valueOf("End"));
         }
     }
 }

@@ -28,7 +28,7 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
-
+// Activity to add a course to a term
 public class TermAddCourseActivity extends Activity implements CourseAdapter.OnCourseSelectedListener {
 
     public LocalDate StartDateValue;
@@ -36,66 +36,73 @@ public class TermAddCourseActivity extends Activity implements CourseAdapter.OnC
     public String TermTitle;
     public Course selectedCourse;
 
+    // Method to handle course selection
     @Override
     public void onCourseSelected(Course selectedCourse) {
-        // This method will be called when an item is selected
         this.selectedCourse = selectedCourse;
-        Log.d("Troubleshooting", "onCourseSelected: " + selectedCourse.getCourseName() + ", Status: " + selectedCourse.getCourseStatus());
+        Log.d("Course Selection", "Selected Course: " + selectedCourse.getCourseName() + ", Status: " + selectedCourse.getCourseStatus());
     }
 
+    // Method to handle activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.term_course_selection);
 
+        // Get term ID from intent
         Intent intent = getIntent();
         int TermID = intent.getIntExtra("TermID", 1);
 
+        // Set up RecyclerView for course list
         RecyclerView recyclerView = findViewById(R.id.TermCourseList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Get database instance and course DAO
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
         CourseDAO courseDAO = db.courseDAO();
 
+        // Get all courses
         final List<Course> courses = courseDAO.getAllCourses();
 
-        CourseAdapter courseAdapter = new CourseAdapter(courses, this); // pass 'this' as the listener
+        // Set up course adapter and attach to RecyclerView
+        CourseAdapter courseAdapter = new CourseAdapter(courses, this);
         recyclerView.setAdapter(courseAdapter);
 
+        // Set up back button and its click listener
         Button backButton = findViewById(R.id.AddTermCourseBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(TermAddCourseActivity.this, TermListActivity.class);
                 startActivity(intent);
             }
         });
 
-
+        // Set up AddCourse button and its click listener
         Button AddCourse = findViewById(R.id.AddCourseToTerm);
         AddCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // Get selected course details
                 String Title = selectedCourse.getCourseName();
                 Integer CourseID = selectedCourse.getCourseID();
                 Integer MentorID = selectedCourse.getMentorID();
                 CourseStatus Status = selectedCourse.getCourseStatus();
-                Log.d("Troubleshooting", "Status "+String.valueOf(Status));
                 StartDateValue = selectedCourse.getStartDate();
                 EndDateValue = selectedCourse.getEndDate();
 
+                // Get database instance and DAOs
                 Context context = getApplicationContext();
                 AppDatabase db = AppDatabase.getDbInstance(context);
-
                 CourseDAO courseDAO = db.courseDAO();
                 TermDAO termDAO = db.termDAO();
 
-                Course course = new Course(TermID, MentorID, Title, StartDateValue, EndDateValue, Status); // your course object
+                // Create new course and insert into database
+                Course course = new Course(TermID, MentorID, Title, StartDateValue, EndDateValue, Status);
                 courseDAO.insert(course);
 
+                // Start TermViewActivity with term details
                 Intent intent = new Intent(TermAddCourseActivity.this, TermViewActivity.class);
-
                 intent.putExtra("TermID", TermID);
                 intent.putExtra("Title", termDAO.getTermName(TermID));
                 intent.putExtra("StartDate", StartDateValue.toString());

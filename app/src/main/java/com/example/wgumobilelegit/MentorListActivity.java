@@ -18,54 +18,60 @@ import com.example.wgumobilelegit.database.AppDatabase;
 
 import java.util.List;
 
+// This class is responsible for displaying the list of mentors
 public class MentorListActivity extends Activity implements MentorAdapter.OnMentorSelectedListener {
 
     private Mentor selectedMentor;
 
+    // This method is called when a mentor is selected from the list
     @Override
     public void onMentorSelected(Mentor selectedMentor) {
-        // This method will be called when an item is selected
         this.selectedMentor = selectedMentor;
     }
 
+    // This method is called when the activity is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mentor_list);
 
+        // Setting up the RecyclerView for displaying the list of mentors
         RecyclerView recyclerView = findViewById(R.id.MentorList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Getting the database instance and the MentorDAO
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
         MentorDAO mentorDAO = db.mentorDAO();
 
+        // Fetching all the mentors from the database
         final List<Mentor> mentors = mentorDAO.getAllMentors();
 
-        MentorAdapter mentorAdapter = new MentorAdapter(mentors, this); // pass 'this' as the listener
+        // Setting up the adapter for the RecyclerView
+        MentorAdapter mentorAdapter = new MentorAdapter(mentors, this);
         recyclerView.setAdapter(mentorAdapter);
 
+        // Setting up the back button
         Button backButton = findViewById(R.id.BackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(MentorListActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
+        // Setting up the add mentor button
         Button AddButton = findViewById(R.id.AddMentor);
         AddButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(MentorListActivity.this, MentorAddActivity.class);
                 startActivity(intent);
             }
         });
 
+        // Setting up the view mentor button
         Button ViewButton = findViewById(R.id.viewMentor);
         ViewButton.setOnClickListener(new View.OnClickListener() {
           public void onClick(View v) {
-              // Code here executes on main thread after user presses button
               Intent intent = new Intent(MentorListActivity.this, MentorViewActivity.class);
 
               if (selectedMentor != null) {
@@ -74,9 +80,6 @@ public class MentorListActivity extends Activity implements MentorAdapter.OnMent
                   String email = selectedMentor.getEmail() != null ? selectedMentor.getEmail().toString() : null;
                   String phone = selectedMentor.getPhone() != null ? selectedMentor.getPhone().toString() : null;
 
-                  Log.d("Troubleshooting", "Date"+phone);
-
-
                   intent.putExtra("MentorID", mentorID);
                   intent.putExtra("Title", title);
                   intent.putExtra("Email", email);
@@ -84,18 +87,15 @@ public class MentorListActivity extends Activity implements MentorAdapter.OnMent
 
                   startActivity(intent);
               } else {
-                  // Handle the case where no mentor is selected
-                  // For example, show a Toast message
                   Toast.makeText(MentorListActivity.this, "Please select a mentor to edit", Toast.LENGTH_SHORT).show();
               }
           }
       });
 
-
+        // Setting up the edit mentor button
         Button EditButton = findViewById(R.id.EditMentor);
         EditButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(MentorListActivity.this, MentorEditActivity.class);
 
                 if (selectedMentor != null) {
@@ -104,9 +104,6 @@ public class MentorListActivity extends Activity implements MentorAdapter.OnMent
                     String email = selectedMentor.getEmail() != null ? selectedMentor.getEmail().toString() : null;
                     String phone = selectedMentor.getPhone() != null ? selectedMentor.getPhone().toString() : null;
 
-                    Log.d("Troubleshooting", "Date"+phone);
-
-
                     intent.putExtra("MentorID", mentorID);
                     intent.putExtra("Title", title);
                     intent.putExtra("Email", email);
@@ -114,36 +111,33 @@ public class MentorListActivity extends Activity implements MentorAdapter.OnMent
 
                     startActivity(intent);
                 } else {
-                    // Handle the case where no mentor is selected
-                    // For example, show a Toast message
                     Toast.makeText(MentorListActivity.this, "Please select a mentor to edit", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        // Setting up the delete mentor button
         Button DeleteButton = findViewById(R.id.DeleteMentor);
         DeleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-
+                // Deleting the selected mentor from the database
                 mentorDAO.delete(selectedMentor);
 
+                // Refreshing the list of mentors after deletion
                 final List<Mentor> mentors = mentorDAO.getAllMentors();
 
-                MentorAdapter mentorAdapter = new MentorAdapter(mentors, MentorListActivity.this); // pass 'this' as the listener
+                MentorAdapter mentorAdapter = new MentorAdapter(mentors, MentorListActivity.this);
                 recyclerView.setAdapter(mentorAdapter);
             }
         });
 
-
-        // Start a new thread for database operation
+        // Starting a new thread to fetch all the mentors from the database
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Retrieve all the mentors from the Room database
                 final List<Mentor> mentors = mentorDAO.getAllMentors();
 
-                // Run the adapter setting on the UI thread since it affects the UI
+                // Updating the RecyclerView on the UI thread
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

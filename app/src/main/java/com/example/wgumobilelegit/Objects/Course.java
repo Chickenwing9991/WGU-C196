@@ -14,11 +14,11 @@ import com.example.wgumobilelegit.database.Converters;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+// Define the Course entity for the Room database
 @Entity (tableName = "courses")
 public class Course implements Parcelable {
 
-
-
+    // Define the primary key for the Course entity
     @PrimaryKey (autoGenerate = true)
     public Integer courseID;
     @ColumnInfo
@@ -34,6 +34,7 @@ public class Course implements Parcelable {
     @ColumnInfo
     public CourseStatus status;
 
+    // Constructor for the Course entity
     public Course(Integer courseID, Integer termID, Integer mentorID,
                   String courseName, LocalDate startDate, LocalDate endDate, CourseStatus status) {
         this.courseID = courseID;
@@ -45,6 +46,7 @@ public class Course implements Parcelable {
         this.status = status;
     }
 
+    // Overloaded constructors for the Course entity
     @Ignore
     public Course(
                   String courseName, LocalDate startDate, LocalDate endDate, CourseStatus status) {
@@ -85,7 +87,7 @@ public class Course implements Parcelable {
         this.status = status;
     }
 
-
+    // Method to read data from a Parcel
     protected Course(Parcel in) {
         if (in.readByte() == 0) {
             courseID = null;
@@ -108,6 +110,7 @@ public class Course implements Parcelable {
         status = Converters.fromStatusString(in.readString());
     }
 
+    // Method to write data to a Parcel
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
@@ -129,18 +132,19 @@ public class Course implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeInt(mentorID);
         }
-        //Convert non-parcelable parameters into strings so that they can be parsed.
         dest.writeString(courseName);
         dest.writeString(startDate.format(formatter));
         dest.writeString(endDate.format(formatter));
         dest.writeString(Converters.fromCourseStatus(status));
     }
 
+    // Method to describe the contents of the Parcel
     @Override
     public int describeContents() {
         return 0;
     }
 
+    // Creator for the Parcelable interface
     public static final Creator<Course> CREATOR = new Creator<Course>() {
         @Override
         public Course createFromParcel(Parcel in) {
@@ -153,6 +157,7 @@ public class Course implements Parcelable {
         }
     };
 
+    // Getter and setter methods for the Course entity
     public Integer getCourseID() {
         return courseID;
     }
@@ -192,8 +197,7 @@ public class Course implements Parcelable {
         this.mentorID = mentorID;
     }
 
-
-
+    // Method to return the course name as a string
     @NonNull
     @Override
     public String toString() {

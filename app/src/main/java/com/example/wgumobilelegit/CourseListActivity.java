@@ -21,56 +21,60 @@ import com.example.wgumobilelegit.database.AppDatabase;
 
 import java.util.List;
 
+// This class is responsible for displaying the list of courses
 public class CourseListActivity extends Activity implements CourseAdapter.OnCourseSelectedListener {
 
     private Course selectedCourse;
 
+    // This method is called when a course is selected from the list
     @Override
     public void onCourseSelected(Course selectedCourse) {
-        // This method will be called when an item is selected
         this.selectedCourse = selectedCourse;
-
-        Log.d("TroubleShoot", selectedCourse.getCourseStatus().toString());
     }
 
+    // This method is called when the activity is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_list);
 
+        // Setting up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.courseList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Getting the database instance and the DAOs
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
         CourseDAO courseDAO = db.courseDAO();
 
+        // Fetching all the courses from the database
         final List<Course> courses = courseDAO.getAllCourses();
 
-        CourseAdapter courseAdapter = new CourseAdapter(courses, this); // pass 'this' as the listener
+        // Setting up the adapter for the RecyclerView
+        CourseAdapter courseAdapter = new CourseAdapter(courses, this);
         recyclerView.setAdapter(courseAdapter);
 
+        // Setting up the back button
         Button backButton = findViewById(R.id.courseBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseListActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
+        // Setting up the add course button
         Button AddButton = findViewById(R.id.addCourse);
         AddButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseListActivity.this, CourseAddActivity.class);
                 startActivity(intent);
             }
         });
 
+        // Setting up the view course button
         Button ViewButton = findViewById(R.id.viewCourse);
         ViewButton.setOnClickListener(new View.OnClickListener() {
           public void onClick(View v) {
-              // Code here executes on main thread after user presses button
               Intent intent = new Intent(CourseListActivity.this, CourseViewActivity.class);
 
               if (selectedCourse != null) {
@@ -82,7 +86,7 @@ public class CourseListActivity extends Activity implements CourseAdapter.OnCour
                   NoteDAO noteDAO = db.noteDAO();
                   Note NoteText = noteDAO.getNoteText(courseID);
 
-
+                  // Passing the course details to the next activity
                   intent.putExtra("CourseID", courseID);
                   intent.putExtra("Title", title);
                   intent.putExtra("StartDate", startDate);
@@ -92,18 +96,15 @@ public class CourseListActivity extends Activity implements CourseAdapter.OnCour
 
                   startActivity(intent);
               } else {
-                  // Handle the case where no course is selected
-                  // For example, show a Toast message
                   Toast.makeText(CourseListActivity.this, "Please select a course to edit", Toast.LENGTH_SHORT).show();
               }
           }
       });
 
-
+        // Setting up the edit course button
         Button EditButton = findViewById(R.id.editCourse);
         EditButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseListActivity.this, CourseEditActivity.class);
 
                 if (selectedCourse != null) {
@@ -117,15 +118,10 @@ public class CourseListActivity extends Activity implements CourseAdapter.OnCour
                     Note note = noteDao.getNoteText(courseID);
 
                     if (note != null) {
-                        Log.d("Troubleshooting", "Status "+String.valueOf(Status));
-                        Log.d("Troubleshooting", "CourseID "+String.valueOf(courseID));
-                        Log.d("Troubleshooting", "Note "+String.valueOf(note.getNote()));
-
                         intent.putExtra("Note", note.getNote());
-                    } else {
-                        Log.d("Troubleshooting", "Note not found for courseID: " + String.valueOf(courseID));
                     }
 
+                    // Passing the course details to the next activity
                     intent.putExtra("CourseID", courseID);
                     intent.putExtra("Title", title);
                     intent.putExtra("StartDate", startDate);
@@ -134,36 +130,32 @@ public class CourseListActivity extends Activity implements CourseAdapter.OnCour
 
                     startActivity(intent);
                 } else {
-                    // Handle the case where no course is selected
-                    // For example, show a Toast message
                     Toast.makeText(CourseListActivity.this, "Please select a course to edit", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        // Setting up the delete course button
         Button DeleteButton = findViewById(R.id.deleteCourse);
         DeleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-
+                // Deleting the selected course from the database
                 courseDAO.delete(selectedCourse);
 
+                // Refreshing the list of courses
                 final List<Course> courses = courseDAO.getAllCourses();
 
-                CourseAdapter courseAdapter = new CourseAdapter(courses, CourseListActivity.this); // pass 'this' as the listener
+                CourseAdapter courseAdapter = new CourseAdapter(courses, CourseListActivity.this);
                 recyclerView.setAdapter(courseAdapter);
             }
         });
 
-
-        // Start a new thread for database operation
+        // Starting a new thread to fetch the courses from the database
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Retrieve all the courses from the Room database
                 final List<Course> courses = courseDAO.getAllCourses();
 
-                // Run the adapter setting on the UI thread since it affects the UI
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

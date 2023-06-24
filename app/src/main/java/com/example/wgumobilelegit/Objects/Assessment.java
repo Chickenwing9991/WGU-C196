@@ -1,6 +1,5 @@
 package com.example.wgumobilelegit.Objects;
 
-
 import static com.example.wgumobilelegit.database.Converters.fromAssessmentString;
 
 import android.os.Parcel;
@@ -14,22 +13,27 @@ import androidx.room.PrimaryKey;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+// Entity class for assessments
 @Entity(tableName = "assessments")
-//These objects needed to be passed through multiple activities, implementing the parcelable
-// interface allowed me to pass the objects successfully with some adjustments to the 'parse' methods.
 public class Assessment implements Parcelable {
 
+    // Primary key for the assessment
     @PrimaryKey(autoGenerate = true)
     public Integer assID;
+    // Foreign key for the class
     @ColumnInfo
     public Integer classID;
+    // Title of the assessment
     @ColumnInfo
     public String assTitle;
+    // Type of the assessment
     @ColumnInfo
     public AssessmentType assType;
+    // Due date of the assessment
     @ColumnInfo
     public LocalDate dueDate;
 
+    // Constructor with all parameters
     @Ignore
     public Assessment(Integer assID, Integer classID, String assTitle, AssessmentType assType,
                        LocalDate dueDate) {
@@ -40,6 +44,7 @@ public class Assessment implements Parcelable {
         this.dueDate = dueDate;
     }
 
+    // Constructor without assID
     public Assessment(Integer classID, String assTitle, AssessmentType assType,
                       LocalDate dueDate) {
         this.classID = classID;
@@ -48,6 +53,7 @@ public class Assessment implements Parcelable {
         this.dueDate = dueDate;
     }
 
+    // Constructor without assID and classID
     @Ignore
     public Assessment(String assTitle, AssessmentType assType,
                       LocalDate dueDate) {
@@ -56,6 +62,7 @@ public class Assessment implements Parcelable {
         this.dueDate = dueDate;
     }
 
+    // Constructor to create object from Parcel
     protected Assessment(Parcel in) {
 
         if (in.readByte() == 0) {
@@ -68,12 +75,13 @@ public class Assessment implements Parcelable {
         } else {
             classID = in.readInt();
         }
-        //Convert non-parcelable parameters into the object.
+        // Convert non-parcelable parameters into the object
         dueDate = LocalDate.parse(in.readString());
         assType = fromAssessmentString(in.readString());
         assTitle = in.readString();
     }
 
+    // Creator to create new instances of the Parcelable class
     public static final Creator<Assessment> CREATOR = new Creator<Assessment>() {
         @Override
         public Assessment createFromParcel(Parcel in) {
@@ -86,11 +94,13 @@ public class Assessment implements Parcelable {
         }
     };
 
+    // Describe the kinds of special objects contained in this Parcelable's marshalled representation
     @Override
     public int describeContents() {
         return 0;
     }
 
+    // Flatten this object into a Parcel
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
@@ -106,27 +116,32 @@ public class Assessment implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeInt(classID);
         }
-        //Convert non-parcelable parameters to strings so that they can be converted.
+        // Convert non-parcelable parameters to strings so that they can be converted
         dest.writeString(dueDate.format(formatter));
         dest.writeString(assType.name());
         dest.writeString(assTitle);
     }
 
+    // Getter for due date
     public LocalDate getDueDate() {
         return dueDate;
     }
 
+    // Getter for assessment ID
     public Integer getAssessmentId() {
         return assID;
     }
 
+    // Getter for assessment type
     public AssessmentType getAssessmenType() {
         return assType;
     }
+    // Getter for assessment name
     public String getAssessmentName() {
         return assTitle;
     }
 
+    // Setter for class ID
     public void setClassID(Integer classID) {
         this.classID = classID;
     }

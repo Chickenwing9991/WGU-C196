@@ -24,7 +24,7 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
-
+// This class is responsible for the Assessment View Activity
 public class AssessmentViewActivity extends Activity implements AssessmentAdapter.OnAssessmentSelectedListener {
 
     public LocalDate StartDateValue;
@@ -32,23 +32,23 @@ public class AssessmentViewActivity extends Activity implements AssessmentAdapte
     public String AssessmentTitle;
     public Assessment selectedAssessment;
 
+    // This method is called when an item is selected
     @Override
     public void onAssessmentSelected(Assessment selectedAssessment) {
-        // This method will be called when an item is selected
         this.selectedAssessment = selectedAssessment;
     }
 
+    // This method is called when the activity is starting
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assessment_details);
 
-        //Get DB Access
+        // Get database access
         Context context = getApplicationContext();
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         AssessmentDAO assessmentDAO = db.AssessmentDAO();
-        /////
 
         // Get the Intent that started this activity and extract the strings
         Intent intent = getIntent();
@@ -69,10 +69,11 @@ public class AssessmentViewActivity extends Activity implements AssessmentAdapte
         TextView TypeVal = findViewById(R.id.assessmentDetailsTypeValue);
         TypeVal.setText(Type.toString());
 
+        // Set up the back button and its click listener
         Button backButton = findViewById(R.id.detailBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+                // This code executes on main thread after user presses button
                 Intent intent = new Intent(AssessmentViewActivity.this, AssessmentListActivity.class);
                 startActivity(intent);
             }

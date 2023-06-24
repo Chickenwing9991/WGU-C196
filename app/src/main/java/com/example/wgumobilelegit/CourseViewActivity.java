@@ -1,5 +1,6 @@
 package com.example.wgumobilelegit;
 
+// Importing necessary libraries and classes
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -38,29 +39,30 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-
+// Main class for the CourseViewActivity
 public class CourseViewActivity extends Activity implements AssessmentAdapter.OnAssessmentSelectedListener,MentorAdapter.OnMentorSelectedListener {
 
+    // Declaring variables
     public LocalDate StartDateValue;
     public LocalDate EndDateValue;
     public String CourseTitle;
     public Assessment selectedAssessment;
     public Mentor selectedMentor;
 
+    // Method to handle the selection of an assessment
     @Override
     public void onAssessmentSelected(Assessment selectedAssessment) {
-        // This method will be called when an item is selected
         this.selectedAssessment = selectedAssessment;
         Log.d("TroubleShoot", selectedAssessment.getAssessmentName()+" "+selectedAssessment.getAssessmentId());
     }
 
+    // Method to handle the selection of a mentor
     @Override
     public void onMentorSelected(Mentor selectedMentor) {
-        // This method will be called when an item in the Mentor list is selected
-        // Handle selectedMentor here
         this.selectedMentor = selectedMentor;
     }
 
+    // Method to handle the creation of the activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,16 +70,15 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
 
         TextView Notes = findViewById(R.id.courseDetailsNotesValue);
 
-        //Get DB Access
+        // Getting database access
         Context context = getApplicationContext();
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         CourseDAO courseDAO = db.courseDAO();
         AssessmentDAO assessmentDAO = db.AssessmentDAO();
         MentorDAO mentorDAO = db.mentorDAO();
-        /////
 
-        // Get the Intent that started this activity and extract the strings
+        // Extracting data from the intent
         Intent intent = getIntent();
         int CourseID = intent.getIntExtra("CourseID", 1);
         String Title = intent.getStringExtra("Title");
@@ -91,7 +92,7 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
         StartDateValue = StartDateParam; // Initialize StartDateValue
         EndDateValue = EndDateParam;
 
-        // Capture the layout's TextViews and set the strings as their texts
+        // Setting the text for the TextViews
         TextView title = findViewById(R.id.detailCourseName);
         title.setText(Title);
 
@@ -104,6 +105,7 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
         TextView StatusVal = findViewById(R.id.courseDetailsStatusValue);
         StatusVal.setText(Status.toString());
 
+        // Setting up the RecyclerView for assessments
         RecyclerView recyclerView = findViewById(R.id.courseDetailsAssessments);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         final List<Assessment> assessments = assessmentDAO.getAssociatedAssessments(CourseID);
@@ -113,7 +115,7 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
         AssessmentAdapter assessmentAdapter = new AssessmentAdapter(assessments, this); // pass 'this' as the listener
         recyclerView.setAdapter(assessmentAdapter);
 
-
+        // Setting up the RecyclerView for mentors
         RecyclerView recyclerViewM = findViewById(R.id.courseDetailsMentors);
         recyclerViewM.setLayoutManager(new LinearLayoutManager(this));
         final List<Mentor> mentors = mentorDAO.getAssociatedMentors(CourseID);
@@ -122,24 +124,23 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
         MentorAdapter mentorAdapter = new MentorAdapter(mentors, this); // pass 'this' as the listener
         recyclerViewM.setAdapter(mentorAdapter);
 
+        // Setting up the back button
         Button backButton = findViewById(R.id.detailBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseViewActivity.this, CourseListActivity.class);
                 startActivity(intent);
             }
         });
 
+        // Setting up the AddAssessment button
         Button AddAssessment = findViewById(R.id.courseDetailsAddAssessment);
         AddAssessment.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseViewActivity.this, CourseAddAssessmentActivity.class);
 
                 Log.d("Troubleshoot", "Start Date"+StartDateValue);
 
-
                 intent.putExtra("CourseID", CourseID);
                 intent.putExtra("Title", Title);
                 intent.putExtra("StartDate", StartDateValue.toString());
@@ -151,15 +152,14 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
             }
         });
 
+        // Setting up the AddMentor button
         Button AddMentor = findViewById(R.id.courseDetailsAddMentors);
         AddMentor.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
                 Intent intent = new Intent(CourseViewActivity.this, CourseAddMentorActivity.class);
 
                 Log.d("Troubleshoot", "Start Date"+StartDateValue);
 
-
                 intent.putExtra("CourseID", CourseID);
                 intent.putExtra("Title", Title);
                 intent.putExtra("StartDate", StartDateValue.toString());
@@ -167,11 +167,11 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
                 intent.putExtra("Status", Status.toString());
                 intent.putExtra("Note", Note);
 
-
                 startActivity(intent);
             }
         });
 
+        // Setting up the DeleteAssessment button
         Button DeleteAssessment = findViewById(R.id.courseDetailsDeleteMentors);
         DeleteAssessment.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -187,6 +187,7 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
             }
         });
 
+        // Setting up the SetAlert button
         Button SetAlert = findViewById(R.id.courseDetailsSetAlert);
         SetAlert.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -237,7 +238,7 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
             }
         });
 
-
+        // Setting up the ShareNotes button
         Button ShareNotes = findViewById(R.id.ShareNotes);
         ShareNotes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -255,7 +256,7 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
             }
         });
 
-
+        // Setting up the DeleteMentor button
         Button DeleteMentor = findViewById(R.id.courseDetailsDeleteAssessment);
         DeleteMentor.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

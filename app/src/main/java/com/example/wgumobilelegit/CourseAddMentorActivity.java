@@ -23,7 +23,7 @@ import com.example.wgumobilelegit.database.AppDatabase;
 import java.time.LocalDate;
 import java.util.List;
 
-
+// Activity for adding a mentor to a course
 public class CourseAddMentorActivity extends Activity implements MentorAdapter.OnMentorSelectedListener {
 
     public LocalDate StartDateValue;
@@ -31,17 +31,19 @@ public class CourseAddMentorActivity extends Activity implements MentorAdapter.O
     public String TermTitle;
     public Mentor selectedMentor;
 
+    // Method to handle mentor selection
     @Override
     public void onMentorSelected(Mentor selectedMentor) {
-        // This method will be called when an item is selected
         this.selectedMentor = selectedMentor;
     }
 
+    // Method to handle activity creation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_mentor_selection);
 
+        // Get intent and extract data
         Intent intent = getIntent();
         int CourseID = intent.getIntExtra("CourseID", 1);
         String CourseTitle = intent.getStringExtra("Title");
@@ -50,24 +52,30 @@ public class CourseAddMentorActivity extends Activity implements MentorAdapter.O
         CourseStatus Status = CourseStatus.fromString(intent.getStringExtra("Status"));
         String Note = intent.getStringExtra("Note");
 
-        StartDateValue = StartDateParam; // Initialize StartDateValue
+        // Initialize date values
+        StartDateValue = StartDateParam;
         EndDateValue = EndDateParam;
 
+        // Set up RecyclerView
         RecyclerView recyclerView = findViewById(R.id.CourseMentorList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Get database instance and DAO
         AppDatabase db = AppDatabase.getDbInstance(this.getApplicationContext());
         MentorDAO mentorDAO = db.mentorDAO();
 
+        // Get all mentors
         final List<Mentor> mentors = mentorDAO.getAllMentors();
 
-        MentorAdapter mentorAdapter = new MentorAdapter(mentors, this); // pass 'this' as the listener
+        // Set up adapter and attach to RecyclerView
+        MentorAdapter mentorAdapter = new MentorAdapter(mentors, this);
         recyclerView.setAdapter(mentorAdapter);
 
+        // Set up back button and its click listener
         Button backButton = findViewById(R.id.AddCourseMentorBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+                // Create intent and put extras
                 Intent intent = new Intent(CourseAddMentorActivity.this, CourseViewActivity.class);
 
                 intent.putExtra("CourseID", CourseID);
@@ -77,33 +85,33 @@ public class CourseAddMentorActivity extends Activity implements MentorAdapter.O
                 intent.putExtra("Status", Status.toString());
                 intent.putExtra("Note", Note);
 
+                // Start CourseViewActivity
                 startActivity(intent);
             }
         });
 
-
+        // Set up AddMentor button and its click listener
         Button AddMentor = findViewById(R.id.AddMentorToCourse);
         AddMentor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // Get DAOs
                 TermDAO termDAO = db.termDAO();
-
-                String Title = selectedMentor.getName();
-                Integer MentorID = selectedMentor.getId();
-                Log.d("Troubleshoot", "MentorID"+MentorID);
-                String Email = selectedMentor.getEmail();
-                String Phone = selectedMentor.getPhone();
-
-                Context context = getApplicationContext();
-                AppDatabase db = AppDatabase.getDbInstance(context);
-
                 MentorDAO mentorDAO = db.mentorDAO();
                 CourseDAO courseDAO = db.courseDAO();
 
-                Course course = new Course(CourseID, null, MentorID, CourseTitle, StartDateValue, EndDateValue, Status); // your mentor object
+                // Get selected mentor details
+                String Title = selectedMentor.getName();
+                Integer MentorID = selectedMentor.getId();
+                String Email = selectedMentor.getEmail();
+                String Phone = selectedMentor.getPhone();
+
+                // Create course object and update in database
+                Course course = new Course(CourseID, null, MentorID, CourseTitle, StartDateValue, EndDateValue, Status);
                 courseDAO.update(course);
 
+                // Create intent and put extras
                 Intent intent = new Intent(CourseAddMentorActivity.this, CourseViewActivity.class);
 
                 intent.putExtra("CourseID", CourseID);
@@ -113,6 +121,7 @@ public class CourseAddMentorActivity extends Activity implements MentorAdapter.O
                 intent.putExtra("Status", Status.toString());
                 intent.putExtra("Note", Note);
 
+                // Start CourseViewActivity
                 startActivity(intent);
             }
         });
