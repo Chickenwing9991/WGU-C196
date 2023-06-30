@@ -54,21 +54,6 @@ public class CourseListActivity extends Activity implements CourseAdapter.OnCour
         CourseAdapter courseAdapter = new CourseAdapter(courses, this);
         recyclerView.setAdapter(courseAdapter);
 
-        // Setting up the SearchView
-        SearchView searchView = findViewById(R.id.searchCourses);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                courseAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
         // Setting up the back button
         Button backButton = findViewById(R.id.courseBack);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +162,21 @@ public class CourseListActivity extends Activity implements CourseAdapter.OnCour
                     public void run() {
                         CourseAdapter courseAdapter = new CourseAdapter(courses, CourseListActivity.this);
                         recyclerView.setAdapter(courseAdapter);
+
+                        // Setting up the SearchView
+                        SearchView searchView = findViewById(R.id.searchCourses);
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String newText) {
+                                courseAdapter.getFilter().filter(newText);
+                                return false;
+                            }
+                        });
                     }
                 });
             }
