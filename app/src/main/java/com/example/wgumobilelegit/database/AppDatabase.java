@@ -12,12 +12,15 @@ import com.example.wgumobilelegit.Objects.Course;
 import com.example.wgumobilelegit.Objects.Mentor;
 import com.example.wgumobilelegit.Objects.Note;
 import com.example.wgumobilelegit.Objects.Term;
+import com.example.wgumobilelegit.Objects.User;
 import com.example.wgumobilelegit.dao.AssessmentDAO;
 import com.example.wgumobilelegit.dao.CourseDAO;
 import com.example.wgumobilelegit.dao.MentorDAO;
 import com.example.wgumobilelegit.dao.NoteDAO;
 import com.example.wgumobilelegit.dao.TermDAO;
-@Database(entities = {Assessment.class, Course.class, Mentor.class, Term.class, Note.class}, version = 7, exportSchema = false)
+import com.example.wgumobilelegit.dao.UserDAO;
+
+@Database(entities = {Assessment.class, Course.class, Mentor.class, Term.class, Note.class, User.class}, version = 9, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -32,6 +35,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TermDAO termDAO();
 
     public abstract NoteDAO noteDAO();
+
+    public abstract UserDAO userDAO();
 
     public static AppDatabase getDbInstance(Context context){
         if(INSTANCE == null){
