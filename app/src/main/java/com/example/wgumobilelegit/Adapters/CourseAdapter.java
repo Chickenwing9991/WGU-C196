@@ -5,18 +5,21 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wgumobilelegit.Objects.Course;
-import com.example.wgumobilelegit.Objects.Term;
 import com.example.wgumobilelegit.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder> {
+public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder> implements Filterable {
     private List<Course> courseList;
+    private List<Course> courseListFull;
 
     private int selectedItem = -1;
     private Course selectedCourse;
@@ -45,9 +48,42 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     // Constructor
     public CourseAdapter(List<Course> courseList, OnCourseSelectedListener courseSelectedListener) {
         this.courseList = courseList;
+        this.courseListFull = new ArrayList<>(courseList); // create a full copy for filtering
         this.courseSelectedListener = courseSelectedListener;
     }
 
+    // Filter logic
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String searchText = charSequence.toString().toLowerCase();
+                List<Course> filteredList = new ArrayList<>();
+
+                if (searchText.isEmpty()) {
+                    filteredList.addAll(courseListFull);
+                } else {
+                    for (Course course : courseListFull) {
+                        if (course.getCourseName().toLowerCase().contains(searchText)) {
+                            filteredList.add(course);
+                        }
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                courseList.clear();
+                courseList.addAll((List<Course>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
+    }
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -81,7 +117,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         });
 
         // Check if the courseList is not null and has data
-        if(courseList != null && !courseList.isEmpty()) {
+        if (courseList != null && !courseList.isEmpty()) {
             // Get element from your data set at this position and replace the contents of the view
             Course course = courseList.get(position);
             if (course != null && course.getCourseName() != null) {
@@ -102,5 +138,4 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         // Check if the courseList is not null before returning its size
         return courseList != null ? courseList.size() : 0;
     }
-
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +53,21 @@ public class CourseListActivity extends Activity implements CourseAdapter.OnCour
         // Setting up the adapter for the RecyclerView
         CourseAdapter courseAdapter = new CourseAdapter(courses, this);
         recyclerView.setAdapter(courseAdapter);
+
+        // Setting up the SearchView
+        SearchView searchView = findViewById(R.id.searchCourses);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                courseAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
 
         // Setting up the back button
         Button backButton = findViewById(R.id.courseBack);
