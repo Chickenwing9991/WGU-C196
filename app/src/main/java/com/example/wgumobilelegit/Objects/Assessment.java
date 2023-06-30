@@ -33,33 +33,39 @@ public class Assessment implements Parcelable {
     @ColumnInfo
     public LocalDate dueDate;
 
+    @ColumnInfo
+    public LocalDate startDate;
+
     // Constructor with all parameters
     @Ignore
     public Assessment(Integer assID, Integer classID, String assTitle, AssessmentType assType,
-                       LocalDate dueDate) {
+                       LocalDate dueDate, LocalDate startDate) {
         this.assID = assID;
         this.classID = classID;
         this.assTitle = assTitle;
         this.assType = assType;
         this.dueDate = dueDate;
+        this.startDate = startDate;
     }
 
     // Constructor without assID
     public Assessment(Integer classID, String assTitle, AssessmentType assType,
-                      LocalDate dueDate) {
+                      LocalDate dueDate, LocalDate startDate) {
         this.classID = classID;
         this.assTitle = assTitle;
         this.assType = assType;
         this.dueDate = dueDate;
+        this.startDate = startDate;
     }
 
     // Constructor without assID and classID
     @Ignore
     public Assessment(String assTitle, AssessmentType assType,
-                      LocalDate dueDate) {
+                      LocalDate dueDate, LocalDate startDate) {
         this.assTitle = assTitle;
         this.assType = assType;
         this.dueDate = dueDate;
+        this.startDate = startDate;
     }
 
     // Constructor to create object from Parcel
@@ -125,6 +131,11 @@ public class Assessment implements Parcelable {
     // Getter for due date
     public LocalDate getDueDate() {
         return dueDate;
+    }
+
+    // Getter for start date
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
     // Getter for assessment ID

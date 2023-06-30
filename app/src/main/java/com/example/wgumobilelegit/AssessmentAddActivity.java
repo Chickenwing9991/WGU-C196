@@ -74,6 +74,15 @@ public class AssessmentAddActivity extends Activity {
             }
         });
 
+        // Initialize Start date button and set click listener
+        Button StartDate = findViewById(R.id.GoAssessmentDetailsStart);
+        StartDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(AssessmentAddActivity.this, AssessmentStartDateActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
         // Set spinner item selected listener
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -107,7 +116,7 @@ public class AssessmentAddActivity extends Activity {
                 NoteDAO noteDAO = db.noteDAO();
 
                 // Create new assessment and insert into database
-                Assessment assessment = new Assessment(Title,SelectedType, DueDateValue);
+                Assessment assessment = new Assessment(Title,SelectedType, DueDateValue, StartDateValue);
                 assessmentDAO.insert(assessment);
 
                 // Start AssessmentListActivity
@@ -131,7 +140,7 @@ public class AssessmentAddActivity extends Activity {
             StartDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 
             // Update start date text view
-            TextView StartText = findViewById(R.id.editStartDate);
+            TextView StartText = findViewById(R.id.editAssStartDate);
             StartText.setText(String.valueOf(StartDateValue));
         }
         else{

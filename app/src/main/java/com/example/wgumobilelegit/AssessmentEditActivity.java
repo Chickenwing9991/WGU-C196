@@ -25,10 +25,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // AssessmentEditActivity class
 public class AssessmentEditActivity extends Activity {
     public LocalDate DueDateValue;
+    public LocalDate StartDateValue;
     public String AssessmentTitle;
 
     // onCreate method
@@ -55,6 +57,7 @@ public class AssessmentEditActivity extends Activity {
         Integer AssessmentID = intent.getIntExtra("AssessmentID", 1);
         String Title = intent.getStringExtra("Title");
         LocalDate DueDateParam = LocalDate.parse(intent.getStringExtra("DueDate"));
+        LocalDate StartDateParam = LocalDate.parse(intent.getStringExtra("StartDate"));
         AssessmentType Type = AssessmentType.fromString(intent.getStringExtra("Type"));
 
         // Set spinner selection based on AssessmentType
@@ -68,6 +71,7 @@ public class AssessmentEditActivity extends Activity {
         spinner.setSelection(spinnerPosition);
 
         DueDateValue = DueDateParam;
+        StartDateValue = StartDateParam;
 
         // Set text for TextViews
         TextView title = findViewById(R.id.editAssessmentTitle);
@@ -76,6 +80,9 @@ public class AssessmentEditActivity extends Activity {
         TextView endDate = findViewById(R.id.editDueDate);
         endDate.setText(String.valueOf(DueDateParam));
 
+
+        TextView startDate = findViewById(R.id.editAssStartDate);
+        startDate.setText(String.valueOf(StartDateParam));
         // Set onClickListener for backButton
         Button backButton = findViewById(R.id.AddAssessmentBack);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +97,15 @@ public class AssessmentEditActivity extends Activity {
         DueDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(AssessmentEditActivity.this, AssessmentDueDateActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
+        // Set onClickListener for StartDate button
+        Button StartDate = findViewById(R.id.GoAssessmentDetailsStart);
+        DueDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(AssessmentEditActivity.this, AssessmentStartDateActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
@@ -116,7 +132,7 @@ public class AssessmentEditActivity extends Activity {
                 AssessmentType assessmentType = Type.getType();
 
                 // Create new Assessment object and update in database
-                Assessment assessment = new Assessment(AssessmentID, null, Title, assessmentType, DueDateValue);
+                Assessment assessment = new Assessment(AssessmentID, null, Title, assessmentType, DueDateValue, StartDateValue);
                 assessmentDAO.update(assessment);
 
                 // Start AssessmentListActivity
@@ -131,15 +147,26 @@ public class AssessmentEditActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Get date from Intent
-        long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
+        String IsDate = data.getStringExtra("Date");
 
-        // Convert date to LocalDate
-        Instant instant = Instant.ofEpochMilli(selectedDateMillis);
-        DueDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        // Check if the result is for the start date
+        if (resultCode == RESULT_OK && Objects.equals(IsDate, "Start")) {
+            long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
 
-        // Set date in TextView
-        TextView EndText = findViewById(R.id.editDueDate);
-        EndText.setText(String.valueOf(DueDateValue));
+            // Convert the selected date to LocalDate
+            Instant instant = Instant.ofEpochMilli(selectedDateMillis);
+            StartDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+            TextView StartText = findViewById(R.id.editAssStartDate);
+            StartText.setText(String.valueOf(StartDateValue));
+        }
+        else{
+            long selectedDateMillis = data.getLongExtra("selectedDateMillis", 0);
+
+            // Convert the selected date to LocalDate
+            Instant instant = Instant.ofEpochMilli(selectedDateMillis);
+            DueDateValue = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+            TextView EndText = findViewById(R.id.editDueDate);
+            EndText.setText(String.valueOf(DueDateValue));
+        }
     }
 }

@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/TermsTop"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Terms"
-        android:textAlignment="center"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/TermList"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/viewTerm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Term Details" />
+        <TextView
+            android:id="@+id/TermsTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Terms"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/AddTerm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Term" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/TermList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/EditTerm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Edit Term" />
+        <Button
+            android:id="@+id/viewTerm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Term Details" />
 
-    <Button
-        android:id="@+id/DeleteTerm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete Term" />
+        <Button
+            android:id="@+id/AddTerm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Term" />
 
-    <Button
-        android:id="@+id/BackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back" />
-</LinearLayout>
+        <Button
+            android:id="@+id/EditTerm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Term" />
+
+        <Button
+            android:id="@+id/DeleteTerm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Term" />
+
+        <Button
+            android:id="@+id/BackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

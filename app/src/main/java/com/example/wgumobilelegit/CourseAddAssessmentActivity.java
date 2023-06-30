@@ -101,7 +101,8 @@ public class CourseAddAssessmentActivity extends Activity implements AssessmentA
                 String Title = selectedAssessment.getAssessmentName();
                 Integer AssessmentID = selectedAssessment.getAssessmentId();
                 AssessmentType Type = selectedAssessment.getAssessmenType();
-                EndDateValue = selectedAssessment.getDueDate();
+                LocalDate DueDateValue = selectedAssessment.getDueDate();
+                LocalDate StartDateAssValue = selectedAssessment.getStartDate();
 
                 // Get the database instance and the DAO
                 Context context = getApplicationContext();
@@ -111,7 +112,7 @@ public class CourseAddAssessmentActivity extends Activity implements AssessmentA
                 CourseDAO courseDAO = db.courseDAO();
 
                 // Create a new assessment and insert it into the database
-                Assessment assessment = new Assessment(CourseID, Title, Type, EndDateValue);
+                Assessment assessment = new Assessment(CourseID, Title, Type, DueDateValue, StartDateAssValue);
                 assessmentDAO.insert(assessment);
 
                 // Create a new intent and put the data

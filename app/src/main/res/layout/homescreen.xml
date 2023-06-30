@@ -1,41 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <EditText
-        android:id="@+id/HomeTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Scheduler"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/TermButton"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Terms" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/CoursesButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Courses" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@android:mipmap/sym_def_app_icon"
+            tools:src="@android:mipmap/sym_def_app_icon" />
 
-    <Button
-        android:id="@+id/AssessmentsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Assessments" />
+        <EditText
+            android:id="@+id/HomeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Scheduler"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/MentorButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mentors" />
-</LinearLayout>
+        <Button
+            android:id="@+id/TermButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Terms" />
+
+        <Button
+            android:id="@+id/CoursesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Courses" />
+
+        <Button
+            android:id="@+id/AssessmentsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Assessments" />
+
+        <Button
+            android:id="@+id/MentorButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mentors" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

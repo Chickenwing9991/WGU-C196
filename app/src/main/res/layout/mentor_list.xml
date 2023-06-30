@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/MentorsTop"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mentors"
-        android:textAlignment="center"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/MentorList"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/viewMentor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Mentor Details" />
+        <TextView
+            android:id="@+id/MentorsTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mentors"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/AddMentor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Mentor" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/MentorList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/EditMentor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Edit Mentor" />
+        <Button
+            android:id="@+id/viewMentor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Mentor Details" />
 
-    <Button
-        android:id="@+id/DeleteMentor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete Mentor" />
+        <Button
+            android:id="@+id/AddMentor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Mentor" />
 
-    <Button
-        android:id="@+id/BackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back" />
-</LinearLayout>
+        <Button
+            android:id="@+id/EditMentor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Mentor" />
+
+        <Button
+            android:id="@+id/DeleteMentor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Mentor" />
+
+        <Button
+            android:id="@+id/BackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

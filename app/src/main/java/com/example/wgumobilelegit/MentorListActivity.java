@@ -100,6 +100,7 @@ public class MentorListActivity extends Activity implements MentorAdapter.OnMent
 
                 if (selectedMentor != null) {
                     Integer mentorID = selectedMentor.getId();
+                    Log.d("Troubleshoot", "ID:"+mentorID);
                     String title = selectedMentor.getName() != null ? selectedMentor.getName().toString() : null;
                     String email = selectedMentor.getEmail() != null ? selectedMentor.getEmail().toString() : null;
                     String phone = selectedMentor.getPhone() != null ? selectedMentor.getPhone().toString() : null;

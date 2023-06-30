@@ -55,9 +55,11 @@ public class AssessmentViewActivity extends Activity implements AssessmentAdapte
         int AssessmentID = intent.getIntExtra("AssessmentID", 1);
         String Title = intent.getStringExtra("Title");
         LocalDate DueDateParam = LocalDate.parse(intent.getStringExtra("DueDate"));
+        LocalDate StartDateParam = LocalDate.parse(intent.getStringExtra("StartDate"));
         AssessmentType Type = AssessmentType.fromString(intent.getStringExtra("Type"));
 
         DueDateValue = DueDateParam;
+        StartDateValue = StartDateParam;
 
         // Capture the layout's TextViews and set the strings as their texts
         TextView title = findViewById(R.id.detailAssessmentName);
@@ -65,6 +67,9 @@ public class AssessmentViewActivity extends Activity implements AssessmentAdapte
 
         TextView endDate = findViewById(R.id.assessmentDetailsDueValue);
         endDate.setText(String.valueOf(DueDateParam));
+
+        TextView startDate = findViewById(R.id.assessmentDetailsStartValue);
+        startDate.setText(String.valueOf(StartDateParam));
 
         TextView TypeVal = findViewById(R.id.assessmentDetailsTypeValue);
         TypeVal.setText(Type.toString());

@@ -1,94 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/ScreenTitle"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Term"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/TermTitle"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Title" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editTermTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
+        <TextView
+            android:id="@+id/ScreenTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Term"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/startDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start Date" />
+        <TextView
+            android:id="@+id/TermTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/editTermTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text" />
 
-        <Button
-            android:id="@+id/GoTermDetailsStart"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/startDate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Start Date" />
 
-        <EditText
-            android:id="@+id/editStartDate"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="date" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/GoTermDetailsStart"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Start Date" />
 
-    <TextView
-        android:id="@+id/mentorEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="End Date" />
+            <EditText
+                android:id="@+id/editStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="date" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/GoTermDetailsEnd"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/mentorEmail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="End Date" />
 
-        <EditText
-            android:id="@+id/editEndDate"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/GoTermDetailsEnd"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="End Date" />
+
+            <EditText
+                android:id="@+id/editEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="date" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/SaveTerm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="date" />
+            android:text="Save Term" />
+
+        <Button
+            android:id="@+id/AddTermBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
     </LinearLayout>
-
-    <Button
-        android:id="@+id/SaveTerm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Term" />
-
-    <Button
-        android:id="@+id/AddTermBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

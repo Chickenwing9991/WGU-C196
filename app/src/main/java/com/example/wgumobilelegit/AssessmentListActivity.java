@@ -81,11 +81,13 @@ public class AssessmentListActivity extends Activity implements AssessmentAdapte
                   Integer assessmentID = selectedAssessment.getAssessmentId();
                   String title = selectedAssessment.getAssessmentName() != null ? selectedAssessment.getAssessmentName().toString() : null;
                   String dueDate = selectedAssessment.getDueDate() != null ? selectedAssessment.getDueDate().toString() : null;
+                  String startDate = selectedAssessment.getStartDate() != null ? selectedAssessment.getStartDate().toString() : null;
                   AssessmentType Type = selectedAssessment.getAssessmenType();
 
                   intent.putExtra("AssessmentID", assessmentID);
                   intent.putExtra("Title", title);
                   intent.putExtra("DueDate", dueDate);
+                  intent.putExtra("StartDate", startDate);
                   intent.putExtra("Type", Type.toString());
 
                   startActivity(intent);
@@ -105,10 +107,12 @@ public class AssessmentListActivity extends Activity implements AssessmentAdapte
                     Integer assessmentID = selectedAssessment.getAssessmentId();
                     String title = selectedAssessment.getAssessmentName() != null ? selectedAssessment.getAssessmentName().toString() : null;
                     String dueDate = selectedAssessment.getDueDate() != null ? selectedAssessment.getDueDate().toString() : null;
+                    String StartDate = selectedAssessment.getStartDate() != null ? selectedAssessment.getStartDate().toString() : null;
                     AssessmentType Type = selectedAssessment.getAssessmenType();
 
                     intent.putExtra("AssessmentID", assessmentID);
                     intent.putExtra("Title", title);
+                    intent.putExtra("StartDate", StartDate);
                     intent.putExtra("DueDate", dueDate);
                     intent.putExtra("Type", Type.toString());
 

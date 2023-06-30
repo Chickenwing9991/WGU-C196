@@ -24,10 +24,12 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView DueDate;
+        public TextView StartDate;
         public ViewHolder(View v) {
             super(v);
             title = v.findViewById(R.id.assessmentItemTitle);
             DueDate = v.findViewById(R.id.assessmentItemDue);
+            StartDate = v.findViewById(R.id.assessmentItemStart);
         }
     }
 
@@ -84,6 +86,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.Vi
             if (assessment != null && assessment.getAssessmentName() != null) {
                 holder.title.setText(assessment.getAssessmentName());
                 holder.DueDate.setText(assessment.getDueDate().toString());
+                holder.StartDate.setText(assessment.getStartDate().toString());
             } else {
                 // handle case where assessment or assessmentName is null
             }

@@ -68,14 +68,21 @@ public class MentorEditActivity extends Activity {
             public void onClick(View v) {
 
                 EditText editTitle = findViewById(R.id.editMentorName);
-                String Title = String.valueOf(editTitle.getText());
+                String TitleVal = editTitle.getText().toString();
+
+                TextView email = findViewById(R.id.editMentorEmail);
+                String EmailVal = email.getText().toString();
+
+                TextView phone = findViewById(R.id.editMentorPhone);
+                String PhoneVal = phone.getText().toString();
 
                 Context context = getApplicationContext();
                 AppDatabase db = AppDatabase.getDbInstance(context);
 
                 MentorDAO mentorDAO = db.mentorDAO();
+                Log.d("Troubleshoot", "ID Again:"+MentorID);
 
-                Mentor mentor = new Mentor(MentorID, Title, Phone, Email); // Creating a mentor object
+                Mentor mentor = new Mentor(MentorID, TitleVal, PhoneVal, EmailVal); // Creating a mentor object
                 mentorDAO.update(mentor); // Updating the mentor details in the database
 
                 Intent intent = new Intent(MentorEditActivity.this, MentorListActivity.class);

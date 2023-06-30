@@ -19,6 +19,8 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     // Override the onReceive method
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        int TypeNotifcation = intent.getIntExtra("Type", 0);
         // Create a NotificationManager object
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -30,15 +32,56 @@ public class MyAlarmReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(channel);
         }
 
-        // Create a NotificationCompat.Builder object
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Due Date Reminder")
-                .setContentText("Your assessment is due today!")
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setAutoCancel(true);
+        if(TypeNotifcation == 0){
 
-        // Notify the user with the built notification
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+            Log.d("Troubleshoot", "Result Code"+getResultCode());
+            // Create a NotificationCompat.Builder object
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Start Date Reminder")
+                    .setContentText("Your Course Starts Today!")
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true);
+
+            // Notify the user with the built notification
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
+        } else if (TypeNotifcation == 1)
+        {
+            Log.d("Troubleshoot", "Result Code"+getResultCode());
+            // Create a NotificationCompat.Builder object
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("End Date Reminder")
+                    .setContentText("Your Course Ends Today!")
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true);
+
+            // Notify the user with the built notification
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
+        } else if (TypeNotifcation == 2) {
+            Log.d("Troubleshoot", "Result Code"+getResultCode());
+            // Create a NotificationCompat.Builder object
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Start Date Reminder")
+                    .setContentText("Your Assessment Starts Today!")
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true);
+
+            // Notify the user with the built notification
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
+        } else if (TypeNotifcation == 3) {
+            Log.d("Troubleshoot", "Result Code"+getResultCode());
+            // Create a NotificationCompat.Builder object
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("End Date Reminder")
+                    .setContentText("Your Assessment Ends Today!")
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setAutoCancel(true);
+
+            // Notify the user with the built notification
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
+        }
     }
 }

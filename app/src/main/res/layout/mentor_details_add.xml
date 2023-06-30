@@ -1,74 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/MentorAddTitle"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Mentor"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/MentorTitle"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editMentorName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
+        <TextView
+            android:id="@+id/MentorAddTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Mentor"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/mentorEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Email" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/MentorTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name" />
 
         <EditText
-            android:id="@+id/editMentorEmail"
-            android:layout_width="wrap_content"
+            android:id="@+id/editMentorName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:ems="10"
             android:inputType="text" />
+
+        <TextView
+            android:id="@+id/mentorEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editMentorEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/mentorPhoneLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone Number" />
+
+        <EditText
+            android:id="@+id/editMentorPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/SaveMentor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Mentor" />
+
+        <Button
+            android:id="@+id/AddMentorBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/mentorPhoneLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Phone Number" />
-
-    <EditText
-        android:id="@+id/editMentorPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" />
-
-    <Button
-        android:id="@+id/SaveMentor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Mentor" />
-
-    <Button
-        android:id="@+id/AddMentorBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

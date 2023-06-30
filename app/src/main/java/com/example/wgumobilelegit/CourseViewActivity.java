@@ -194,44 +194,43 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
 
                 boolean areNotificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled();
 
-                if (!areNotificationsEnabled) {
-                    Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-                    startActivity(intent);
-                }
-
                 if (selectedAssessment != null) {
+                    if (!areNotificationsEnabled) {
+                        Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                        startActivity(intent);
+                    }
+
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-                    // The time at which you want to show notification (in milliseconds)
-                    LocalDate dueDate = selectedAssessment.getDueDate();
-                    long triggerTime;
+                    // Get the start and end dates
+                    LocalDate startDate = selectedAssessment.getStartDate();
+                    LocalDate endDate = selectedAssessment.getDueDate();
 
-                    if (dueDate.equals(LocalDate.now())) {
-                        // If the due date is today, set the triggerTime to 5 seconds from now
-                        triggerTime = System.currentTimeMillis() + 5000;
-                        Log.d("Time", String.valueOf(triggerTime));
-                    } else {
-                        // If the due date is in the future, set the triggerTime to the start of the due date
-                        ZonedDateTime zonedDateTime = dueDate.atStartOfDay(ZoneId.systemDefault());
-                        triggerTime = zonedDateTime.toInstant().toEpochMilli();
-                    }
-
-                    // Create an Intent to broadcast to MyAlarmReceiver
-                    Intent intent = new Intent(CourseViewActivity.this, MyAlarmReceiver.class);
-
-                    // Create a PendingIntent to be triggered when the alarm goes off
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(CourseViewActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-                    // Schedule the alarm
+                    // Schedule the start date alert
+                    long startTriggerTime = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                    Intent startIntent = new Intent(CourseViewActivity.this, MyAlarmReceiver.class);
+                    startIntent.putExtra("Type", 2);
+                    PendingIntent startPendingIntent = PendingIntent.getBroadcast(CourseViewActivity.this, 2, startIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, startTriggerTime, startPendingIntent);
                     } else {
-                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, startTriggerTime, startPendingIntent);
                     }
 
-                    Toast.makeText(CourseViewActivity.this, "Alert Set", Toast.LENGTH_SHORT).show();
+                    // Schedule the end date alert
+                    long endTriggerTime = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                    Intent endIntent = new Intent(CourseViewActivity.this, MyAlarmReceiver.class);
+                    endIntent.putExtra("Type", 3);
+                    PendingIntent endPendingIntent = PendingIntent.getBroadcast(CourseViewActivity.this, 3, endIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, endTriggerTime, endPendingIntent);
+                    } else {
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, endTriggerTime, endPendingIntent);
+                    }
+
+                    Toast.makeText(CourseViewActivity.this, "Alerts Set", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(CourseViewActivity.this, "Please select an assessment to enable alerts", Toast.LENGTH_SHORT).show();
                 }
@@ -267,6 +266,52 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
 
                 AssessmentAdapter assessmentAdapter = new AssessmentAdapter(assessments, CourseViewActivity.this); // pass 'this' as the listener
                 recyclerView.setAdapter(assessmentAdapter);
+            }
+        });
+
+
+        Button SetCourseAlert = findViewById(R.id.setCourseAlert);
+        SetCourseAlert.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                boolean areNotificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled();
+
+                if (!areNotificationsEnabled) {
+                    Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                    startActivity(intent);
+                }
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                // Get the start and end dates
+                LocalDate startDate = StartDateValue;
+                LocalDate endDate = EndDateValue;
+
+                // Schedule the start date alert
+                long startTriggerTime = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                Intent startIntent = new Intent(CourseViewActivity.this, MyAlarmReceiver.class);
+                startIntent.putExtra("Type", 0);
+                PendingIntent startPendingIntent = PendingIntent.getBroadcast(CourseViewActivity.this, 0, startIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, startTriggerTime, startPendingIntent);
+                } else {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, startTriggerTime, startPendingIntent);
+                }
+
+                // Schedule the end date alert
+                long endTriggerTime = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                Intent endIntent = new Intent(CourseViewActivity.this, MyAlarmReceiver.class);
+                endIntent.putExtra("Type", 1);
+                PendingIntent endPendingIntent = PendingIntent.getBroadcast(CourseViewActivity.this, 1, endIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, endTriggerTime, endPendingIntent);
+                } else {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, endTriggerTime, endPendingIntent);
+                }
+
+                Toast.makeText(CourseViewActivity.this, "Alerts Set", Toast.LENGTH_SHORT).show();
             }
         });
     }
