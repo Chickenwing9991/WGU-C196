@@ -270,8 +270,8 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
         });
 
 
-        Button SetCourseAlert = findViewById(R.id.setCourseAlert);
-        SetCourseAlert.setOnClickListener(new View.OnClickListener() {
+        Button SetCourseStart = findViewById(R.id.setCourseStart);
+        SetCourseStart.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 boolean areNotificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled();
@@ -287,7 +287,6 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
 
                 // Get the start and end dates
                 LocalDate startDate = StartDateValue;
-                LocalDate endDate = EndDateValue;
 
                 // Schedule the start date alert
                 long startTriggerTime = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -300,6 +299,28 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, startTriggerTime, startPendingIntent);
                 }
 
+                Toast.makeText(CourseViewActivity.this, "Course Start Date Alerts Set", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button SetCourseEnd = findViewById(R.id.setCourseEnd);
+        SetCourseEnd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                boolean areNotificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled();
+
+                if (!areNotificationsEnabled) {
+                    Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                    startActivity(intent);
+                }
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                // Get the start and end dates
+                LocalDate endDate = EndDateValue;
+
                 // Schedule the end date alert
                 long endTriggerTime = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
                 Intent endIntent = new Intent(CourseViewActivity.this, MyAlarmReceiver.class);
@@ -311,7 +332,7 @@ public class CourseViewActivity extends Activity implements AssessmentAdapter.On
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, endTriggerTime, endPendingIntent);
                 }
 
-                Toast.makeText(CourseViewActivity.this, "Alerts Set", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CourseViewActivity.this, "Course End Date Alerts Set", Toast.LENGTH_SHORT).show();
             }
         });
     }
